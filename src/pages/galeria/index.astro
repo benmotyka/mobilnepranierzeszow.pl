@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Gallery from '../../components/Gallery.astro';
+import GalleryNav from '../../components/GalleryNav.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { PHOTOS } from '../../lib/gallery';
+---
+<Base title="Galeria – pranie tapicerki Rzeszów, zdjęcia przed i po" description="Zdjęcia przed i po praniu kanap, narożników, materacy, dywanów i tapicerki samochodowej z Rzeszowa i okolic." noindex={PHOTOS.length === 0}>
+  <Breadcrumbs items={[{ name: 'Galeria', href: '/galeria' }]} />
+  <section class="wrap section top">
+    <div class="section-head">
+      <h1>Galeria: pranie tapicerki przed i po</h1>
+      <p class="lead">Prawdziwe zdjęcia z naszych prań w Rzeszowie i okolicach. Kliknij zdjęcie, żeby je powiększyć.</p>
+    </div>
+    <GalleryNav current="" />
+    {PHOTOS.length > 0 ? <Gallery photos={PHOTOS} /> : (
+      <div class="card empty"><h2>Pierwsze zdjęcia już wkrótce</h2><p class="muted">Dodajemy zdjęcia z każdego prania, za zgodą klientów.</p></div>
+    )}
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  .top { padding-top: 24px; }
+  .empty { padding: 32px; display: grid; gap: 8px; }
+</style>

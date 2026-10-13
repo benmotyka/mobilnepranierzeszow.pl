@@ -1,0 +1,189 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import HeroVisual from '../components/HeroVisual.astro';
+import PriceTable from '../components/PriceTable.astro';
+import Extras from '../components/Extras.astro';
+import Steps from '../components/Steps.astro';
+import Gallery from '../components/Gallery.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, SERVICES, TOWNS, RZESZOW_DISTRICTS, FAQ_GENERAL, waLink } from '../data/site';
+import { PHOTOS } from '../lib/gallery';
+
+const featured = SERVICES.map((s) => ({ name: s.short, price: s.prices[0].price, note: s.prices[0].name, href: `/${s.slug}` }));
+const website = {
+  '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE.url}/#strona`,
+  name: SITE.name, url: SITE.url, inLanguage: 'pl-PL', publisher: { '@id': `${SITE.url}/#firma` },
+};
+---
+<Base
+  title="Mobilne pranie tapicerki Rzeszów – kanapy, narożniki, materace"
+  description="Pranie kanap, narożników, materacy, dywanów i tapicerki samochodowej u Ciebie w domu. Rzeszów i okolice, dojazd w cenie. Wycena ze zdjęcia na WhatsApp w 15 minut."
+  schema={website}
+>
+  <section class="wrap hero">
+    <div class="hero-txt">
+      <p class="eyebrow">Rzeszów i okolice · dojazd w cenie</p>
+      <h1>Pranie kanap i narożników <em>u Ciebie w domu</em></h1>
+      <p class="lead">Mobilne pranie tapicerki w Rzeszowie. Przyjeżdżamy z profesjonalnym ekstraktorem, pierzemy na miejscu i nie wynosisz mebli. Płacisz po praniu.</p>
+      <div class="btn-row">
+        <a class="btn btn-wa" href={waLink()} rel="noopener"><Icon name="wa" size={20} />Wyślij zdjęcie, wycenimy w 15 min</a>
+        <a class="btn btn-ghost" href={SITE.phoneHref}><Icon name="phone" size={18} />{SITE.phone}</a>
+      </div>
+      <ul class="chips">
+        <li><Icon name="clock" size={18} /><span><b>Także w soboty</b>, {SITE.hours.open}–{SITE.hours.close}</span></li>
+        <li><Icon name="pin" size={18} /><span><b>Dojazd gratis</b> do {SITE.freeRadiusKm} km od Rzeszowa</span></li>
+        <li><Icon name="paw" size={18} /><span><b>Bezpieczne</b> dla dzieci i zwierząt po wyschnięciu</span></li>
+        <li><Icon name="receipt" size={18} /><span><b>Paragon</b> lub faktura VAT</span></li>
+      </ul>
+    </div>
+    <HeroVisual />
+  </section>
+
+  <section class="wrap section" id="uslugi">
+    <div class="section-head">
+      <p class="eyebrow">Co pierzemy</p>
+      <h2>Pranie tapicerki w Rzeszowie: meble, materace, dywany i auta</h2>
+    </div>
+    <ul class="svc">
+      {featured.map((s, i) => (
+        <li>
+          <a class="card" href={s.href}>
+            <span class="ic"><Icon name={SERVICES[i].icon} size={26} /></span>
+            <span class="t">{SERVICES[i].h1.replace(/ (w Rzeszowie|Rzeszów).*$/, '')}</span>
+            <span class="muted">{s.note}</span>
+            <span class="p price">{s.price} <Icon name="arrow" size={18} /></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <div class="cols">
+      <div>
+        <div class="section-head">
+          <p class="eyebrow">Cennik</p>
+          <h2>Ile kosztuje pranie kanapy w Rzeszowie?</h2>
+          <p>Ceny brutto z dojazdem po Rzeszowie. Dokładną kwotę podamy po zdjęciu mebla.</p>
+        </div>
+        <PriceTable rows={[
+          ...SERVICES[1].prices.slice(0, 2),
+          SERVICES[0].prices[0],
+          SERVICES[2].prices[2],
+          SERVICES[2].prices[1],
+          SERVICES[3].prices[0],
+          SERVICES[4].prices[0],
+        ]} />
+        <p class="more"><a href="/cennik">Pełny cennik prania tapicerki →</a></p>
+      </div>
+      <div>
+        <div class="section-head"><p class="eyebrow">Przy okazji</p><h2>Dodatki</h2><p>Robimy je w tej samej wizycie, bez kolejnego dojazdu.</p></div>
+        <Extras />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head"><p class="eyebrow">Jak to działa</p><h2>Trzy kroki, zero dźwigania</h2></div>
+    <Steps />
+  </section>
+
+  {PHOTOS.length > 0 && (
+    <section class="wrap section">
+      <div class="section-head"><p class="eyebrow">Galeria</p><h2>Nasze prania z Rzeszowa i okolic</h2></div>
+      <Gallery photos={PHOTOS} limit={9} />
+      <p class="more"><a href="/galeria">Zobacz wszystkie realizacje ({PHOTOS.length}) →</a></p>
+    </section>
+  )}
+
+  <section class="wrap section">
+    <div class="why">
+      <div class="section-head">
+        <p class="eyebrow">Dlaczego my</p>
+        <h2>Sprzęt jak w studiu detailingowym, tylko u Ciebie w salonie</h2>
+        <p>Za firmą stoi studio detailingowe. Te same środki, którymi pierzemy wnętrza aut, sprawdzają się na kanapach i materacach.</p>
+      </div>
+      <ul class="why-list">
+        <li><Icon name="check" /><span><b>Ekstraktor zamiast piany.</b> Roztwór wtryskujemy w tkaninę i od razu odsysamy razem z brudem. Mebel nie zostaje mokry.</span></li>
+        <li><Icon name="check" /><span><b>Cena przed przyjazdem.</b> Wyceniamy ze zdjęcia. Na miejscu nie ma niespodzianek.</span></li>
+        <li><Icon name="check" /><span><b>Uczciwie o plamach.</b> Jeśli plama może nie zejść, mówimy o tym przed praniem.</span></li>
+        <li><Icon name="check" /><span><b>Jesteśmy z Rzeszowa.</b> Dojazd po mieście i do {SITE.freeRadiusKm} km od niego jest w cenie.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap section" id="dojazd">
+    <div class="area">
+      <div>
+        <p class="eyebrow">Obszar dojazdu</p>
+        <h2>Pranie tapicerki w Rzeszowie i okolicach</h2>
+        <p class="muted">Przyjeżdżamy na każde osiedle w Rzeszowie i do miejscowości wokół miasta. Do {SITE.freeRadiusKm} km dojazd jest w cenie, dalej doliczamy {SITE.travelFee} zł.</p>
+        <p class="more"><a href="/obszar-dojazdu">Sprawdź, czy dojedziemy do Ciebie →</a></p>
+      </div>
+      <div class="area-lists">
+        <div>
+          <h3>Osiedla Rzeszowa</h3>
+          <p class="muted small">{RZESZOW_DISTRICTS.join(', ')}</p>
+        </div>
+        <div>
+          <h3>Okolice</h3>
+          <ul class="towns">{TOWNS.map((t) => <li><a href={`/${t.slug}`}>{t.name}</a></li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head"><p class="eyebrow">Pytania</p><h2>Najczęstsze pytania o pranie tapicerki</h2></div>
+    <Faq items={FAQ_GENERAL} />
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; padding-block: clamp(28px, 5vw, 64px) clamp(30px, 5vw, 60px); }
+  .hero-txt { display: grid; gap: 18px; min-width: 0; }
+  h1 em { font-style: normal; color: var(--primary); background: linear-gradient(transparent 64%, var(--soft) 64%); }
+  .chips { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; font-size: 15px; color: var(--muted); }
+  .chips li { display: flex; gap: 8px; align-items: flex-start; }
+  .chips :global(svg) { color: var(--aqua); margin-top: 2px; }
+  .chips b { color: var(--ink); }
+
+  .svc { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .svc a { display: grid; gap: 4px; padding: 20px; text-decoration: none; color: var(--ink); height: 100%; transition: border-color .15s, transform .15s; }
+  .svc a:hover { border-color: var(--primary); transform: translateY(-2px); color: var(--ink); }
+  .ic { width: 46px; height: 46px; border-radius: 12px; background: var(--soft); color: var(--primary); display: grid; place-items: center; margin-bottom: 8px; }
+  .t { font-family: var(--display); font-weight: 700; font-size: 20px; }
+  .svc .muted { font-size: 15px; }
+  .p { margin-top: 8px; color: var(--primary); font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+
+  .cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
+  .cols > div { min-width: 0; }
+  .more { margin-top: 16px; font-weight: 700; }
+  .more a { text-decoration: none; }
+
+  .why { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+  .why-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .why-list li { display: flex; gap: 12px; }
+  .why-list :global(svg) { color: var(--aqua); flex: none; margin-top: 3px; }
+
+  .area { background: var(--soft); border-radius: 20px; padding: clamp(22px, 4vw, 40px); display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; }
+  .area > div { display: grid; gap: 10px; align-content: start; min-width: 0; }
+  .area-lists { display: grid; gap: 18px; }
+  .area h3 { font-size: 17px; margin-bottom: 6px; }
+  .small { font-size: 15px; }
+  .towns { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .towns a { display: block; background: var(--surface); border-radius: 8px; padding: 6px 11px; font-weight: 600; font-size: 15px; text-decoration: none; color: var(--ink); }
+  .towns a:hover { color: var(--primary); }
+
+  @media (max-width: 900px) {
+    .hero, .cols, .why, .area { grid-template-columns: 1fr; }
+    .svc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .svc, .chips { grid-template-columns: 1fr; }
+  }
+</style>

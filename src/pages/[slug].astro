@@ -1,0 +1,217 @@
+---
+// Podstrony usług (/pranie-naroznikow-rzeszow) i miejscowości (/pranie-tapicerki-tyczyn).
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import HeroVisual from '../components/HeroVisual.astro';
+import PriceTable from '../components/PriceTable.astro';
+import Extras from '../components/Extras.astro';
+import Steps from '../components/Steps.astro';
+import Gallery from '../components/Gallery.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, SERVICES, TOWNS, FAQ_GENERAL, waLink, type Service, type Town } from '../data/site';
+import { photosIn, PHOTOS } from '../lib/gallery';
+
+export function getStaticPaths() {
+  return [
+    ...SERVICES.map((s) => ({ params: { slug: s.slug }, props: { kind: 'service' as const, service: s } })),
+    ...TOWNS.map((t) => ({ params: { slug: t.slug }, props: { kind: 'town' as const, town: t } })),
+  ];
+}
+type Props = { kind: 'service'; service: Service } | { kind: 'town'; town: Town };
+const props = Astro.props;
+
+const EXAMPLES: Record<string, { nom: string; gen: string; price: string }> = {
+  narozniki: { nom: 'Taki narożnik', gen: 'takiego narożnika', price: '199 zł' },
+  kanapy: { nom: 'Taka kanapa', gen: 'takiej kanapy', price: '149 zł' },
+  'fotele-i-krzesla': { nom: 'Sześć krzeseł', gen: 'sześciu krzeseł', price: '174 zł' },
+  materace: { nom: 'Taki materac', gen: 'takiego materaca', price: '109 zł' },
+  dywany: { nom: 'Dywan 2 × 3 m', gen: 'dywanu 2 × 3 m', price: '99 zł' },
+  auta: { nom: 'Komplet foteli', gen: 'foteli w aucie', price: '199 zł' },
+};
+---
+{props.kind === 'service' ? (() => {
+  const s = props.service;
+  const photos = photosIn(s.galleryCategory);
+  const others = SERVICES.filter((o) => o.slug !== s.slug);
+  const lowest = s.prices.map((p) => Number(p.price.match(/\d+/)?.[0])).filter((n) => !Number.isNaN(n) && n > 0);
+  const serviceLd = {
+    '@context': 'https://schema.org', '@type': 'Service',
+    name: s.h1, serviceType: s.short, url: `${SITE.url}/${s.slug}`, description: s.description,
+    provider: { '@id': `${SITE.url}/#firma` },
+    areaServed: [{ '@type': 'City', name: 'Rzeszów' }, ...TOWNS.map((t) => ({ '@type': 'Place', name: t.name }))],
+    offers: { '@type': 'AggregateOffer', priceCurrency: 'PLN', lowPrice: Math.min(...lowest), offerCount: s.prices.length },
+  };
+  return (
+    <Base title={s.title} description={s.description} schema={serviceLd}>
+      <Breadcrumbs items={[{ name: s.short, href: `/${s.slug}` }]} />
+      <section class="wrap hero">
+        <div class="hero-txt">
+          <h1>{s.h1}</h1>
+          {s.intro.map((p, i) => <p class={i === 0 ? 'lead' : 'muted'}>{p}</p>)}
+          <div class="btn-row">
+            <a class="btn btn-wa" href={waLink(s.waText)} rel="noopener"><Icon name="wa" size={20} />Wycena ze zdjęcia</a>
+            <a class="btn btn-ghost" href={SITE.phoneHref}><Icon name="phone" size={18} />{SITE.phone}</a>
+          </div>
+        </div>
+        <HeroVisual category={s.galleryCategory} example={EXAMPLES[s.galleryCategory]} />
+      </section>
+
+      <section class="wrap section">
+        <div class="cols">
+          <div>
+            <div class="section-head"><p class="eyebrow">Cennik</p><h2>{s.short}: ceny prania w Rzeszowie</h2><p>Ceny brutto. Dojazd po Rzeszowie i do {SITE.freeRadiusKm} km w cenie.</p></div>
+            <PriceTable rows={s.prices} />
+            <p class="muted small timing"><Icon name="clock" size={18} /> {s.timing}</p>
+          </div>
+          <div>
+            <div class="section-head"><p class="eyebrow">Przy okazji</p><h2>Dodatki</h2></div>
+            <Extras />
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap section">
+        <div class="section-head"><p class="eyebrow">Co dostajesz</p><h2>Jak pierzemy</h2></div>
+        <ul class="points">
+          {s.points.map((p) => <li class="card"><h3>{p.title}</h3><p class="muted">{p.text}</p></li>)}
+        </ul>
+      </section>
+
+      {photos.length > 0 && (
+        <section class="wrap section">
+          <div class="section-head"><p class="eyebrow">Galeria</p><h2>{s.short}: zdjęcia przed i po praniu</h2></div>
+          <Gallery photos={photos} limit={12} showCategory={false} />
+          <p class="more"><a href={`/galeria/${s.galleryCategory}`}>Wszystkie zdjęcia ({photos.length}) →</a></p>
+        </section>
+      )}
+
+      <section class="wrap section">
+        <div class="section-head"><p class="eyebrow">Jak to działa</p><h2>Umów pranie w trzech krokach</h2></div>
+        <Steps />
+      </section>
+
+      <section class="wrap section">
+        <div class="section-head"><p class="eyebrow">Pytania</p><h2>{s.short}: najczęstsze pytania</h2></div>
+        <Faq items={[...s.faq, FAQ_GENERAL[0], FAQ_GENERAL[1]].filter((f, i, a) => a.findIndex((x) => x.q === f.q) === i)} />
+      </section>
+
+      <section class="wrap section">
+        <div class="section-head"><h2>Inne usługi</h2></div>
+        <ul class="links">
+          {others.map((o) => <li><a href={`/${o.slug}`}>{o.h1}</a></li>)}
+          <li><a href="/cennik">Pełny cennik</a></li>
+        </ul>
+        <p class="muted small towns-line">Dojeżdżamy też do: {TOWNS.map((t, i) => <>{i > 0 && ', '}<a href={`/${t.slug}`}>{t.name}</a></>)}.</p>
+      </section>
+
+      <CtaBand waText={s.waText} />
+    </Base>
+  );
+})() : (() => {
+  const t = props.town;
+  const free = t.travel === 'gratis';
+  const travel = free ? `Dojazd ${t.to} jest w cenie.` : `Do ceny prania doliczamy ${SITE.travelFee} zł za dojazd.`;
+  const faq = [
+    { q: `Czy dojeżdżacie ${t.to}?`, a: `Tak. Pierzemy ${t.locative} i w całej gminie: ${t.villages.join(', ')}. ${travel}` },
+    { q: `Ile kosztuje pranie kanapy ${t.locative}?`, a: `Kanapa 3-osobowa od 149 zł, narożnik od 199 zł, materac od 79 zł. ${travel}` },
+    ...FAQ_GENERAL.slice(0, 3),
+  ];
+  const others = TOWNS.filter((o) => o.slug !== t.slug);
+  const placeLd = {
+    '@context': 'https://schema.org', '@type': 'Service',
+    name: `Pranie tapicerki ${t.locative}`, url: `${SITE.url}/${t.slug}`,
+    provider: { '@id': `${SITE.url}/#firma` },
+    areaServed: [{ '@type': 'Place', name: t.name }, ...t.villages.map((v) => ({ '@type': 'Place', name: v }))],
+  };
+  return (
+    <Base
+      title={`Pranie tapicerki ${t.name} – kanapy, narożniki, materace z dojazdem`}
+      description={`Mobilne pranie kanap, narożników, materacy i dywanów ${t.locative} i okolicach (${t.villages.slice(0, 3).join(', ')}). ${travel} Wycena ze zdjęcia na WhatsApp.`}
+      schema={placeLd}
+    >
+      <Breadcrumbs items={[{ name: 'Obszar dojazdu', href: '/obszar-dojazdu' }, { name: t.name, href: `/${t.slug}` }]} />
+      <section class="wrap hero">
+        <div class="hero-txt">
+          <p class="eyebrow">{t.gmina} · {free ? 'dojazd w cenie' : `dojazd +${SITE.travelFee} zł`}</p>
+          <h1>Pranie tapicerki {t.locative}</h1>
+          <p class="lead">Pierzemy kanapy, narożniki, materace, dywany i tapicerkę samochodową {t.locative} i okolicznych miejscowościach. Przyjeżdżamy z Rzeszowa z całym sprzętem.</p>
+          <p class="muted">{t.note}</p>
+          <div class="btn-row">
+            <a class="btn btn-wa" href={waLink(`Dzień dobry, proszę o wycenę prania (${t.name}). Wysyłam zdjęcia.`)} rel="noopener"><Icon name="wa" size={20} />Wycena ze zdjęcia</a>
+            <a class="btn btn-ghost" href={SITE.phoneHref}><Icon name="phone" size={18} />{SITE.phone}</a>
+          </div>
+        </div>
+        <HeroVisual />
+      </section>
+
+      <section class="wrap section">
+        <div class="cols">
+          <div>
+            <div class="section-head"><p class="eyebrow">Usługi</p><h2>Co pierzemy {t.locative}</h2></div>
+            <PriceTable rows={SERVICES.map((s) => ({ name: s.short, price: s.prices[0].price, note: s.prices[0].name }))} />
+            <p class="more"><a href="/cennik">Pełny cennik →</a></p>
+          </div>
+          <div>
+            <div class="section-head"><p class="eyebrow">Dojazd</p><h2>Gdzie dojeżdżamy w okolicy</h2></div>
+            <div class="card villages">
+              <p><b>{t.gmina}:</b>{' '}{t.villages.join(', ')}.</p>
+              <p class="muted">{travel} Pracujemy od poniedziałku do soboty, {SITE.hours.open}–{SITE.hours.close}.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {PHOTOS.length > 0 && (
+        <section class="wrap section">
+          <div class="section-head"><p class="eyebrow">Galeria</p><h2>Efekty naszych prań</h2></div>
+          <Gallery photos={PHOTOS} limit={6} />
+        </section>
+      )}
+
+      <section class="wrap section">
+        <div class="section-head"><p class="eyebrow">Jak to działa</p><h2>Pranie {t.locative} w trzech krokach</h2></div>
+        <Steps />
+      </section>
+
+      <section class="wrap section">
+        <div class="section-head"><p class="eyebrow">Pytania</p><h2>Pranie tapicerki {t.locative}: pytania</h2></div>
+        <Faq items={faq} />
+      </section>
+
+      <section class="wrap section">
+        <div class="section-head"><h2>Usługi i inne miejscowości</h2></div>
+        <ul class="links">
+          {SERVICES.map((s) => <li><a href={`/${s.slug}`}>{s.h1}</a></li>)}
+        </ul>
+        <p class="muted small towns-line">Dojeżdżamy też do: <a href="/obszar-dojazdu">Rzeszów</a>{others.map((o) => <>, <a href={`/${o.slug}`}>{o.name}</a></>)}.</p>
+      </section>
+
+      <CtaBand title={`Pranie ${t.locative}? Wyślij zdjęcie`} />
+    </Base>
+  );
+})()}
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; padding-block: clamp(20px, 4vw, 48px); }
+  .hero-txt { display: grid; gap: 16px; min-width: 0; }
+  .cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
+  .cols > div { min-width: 0; }
+  .timing { display: flex; gap: 8px; margin-top: 14px; }
+  .timing :global(svg) { flex: none; color: var(--aqua); margin-top: 2px; }
+  .small { font-size: 15px; }
+  .points { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .points li { padding: 20px; display: grid; gap: 6px; align-content: start; }
+  .more { margin-top: 16px; font-weight: 700; }
+  .more a { text-decoration: none; }
+  .links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; }
+  .links a { font-weight: 600; }
+  .towns-line { margin-top: 18px; }
+  .villages { padding: 20px; display: grid; gap: 10px; }
+  @media (max-width: 900px) {
+    .hero, .cols { grid-template-columns: 1fr; }
+    .points { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) { .links { grid-template-columns: 1fr; } }
+</style>

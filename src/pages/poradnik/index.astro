@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+const posts = (await getCollection('poradnik')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<Base title="Poradnik – jak dbać o kanapę, materac i dywan | Mobilne Pranie Rzeszów" description="Porady o praniu i czyszczeniu tapicerki: usuwanie plam, schnięcie po praniu, jak często prać kanapę, materac i dywan.">
+  <Breadcrumbs items={[{ name: 'Poradnik', href: '/poradnik' }]} />
+  <section class="wrap section top">
+    <div class="section-head"><h1>Poradnik</h1><p class="lead">Jak dbać o tapicerkę między praniami i czego nie robić z plamą.</p></div>
+    <ul class="posts">
+      {posts.map((p) => (
+        <li class="card"><a href={`/poradnik/${p.id}`}><h2>{p.data.h1}</h2><p class="muted">{p.data.description}</p></a></li>
+      ))}
+    </ul>
+  </section>
+</Base>
+<style>
+  .top { padding-top: 24px; }
+  .posts { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-width: 820px; }
+  .posts a { display: grid; gap: 6px; padding: 22px; text-decoration: none; color: var(--ink); }
+  .posts h2 { font-size: 22px; }
+  .posts a:hover h2 { color: var(--primary); }
+</style>

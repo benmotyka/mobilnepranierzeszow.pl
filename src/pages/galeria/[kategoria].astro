@@ -1,0 +1,34 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Gallery from '../../components/Gallery.astro';
+import GalleryNav from '../../components/GalleryNav.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { CATEGORIES, photosIn } from '../../lib/gallery';
+import { SERVICES } from '../../data/site';
+
+export function getStaticPaths() {
+  return CATEGORIES.map((c) => ({ params: { kategoria: c.slug }, props: { cat: c } }));
+}
+const { cat } = Astro.props;
+const photos = photosIn(cat.slug);
+const service = SERVICES.find((s) => s.slug === cat.service)!;
+---
+<Base title={`${cat.label} – zdjęcia przed i po praniu | Rzeszów`} description={`${cat.label}: zdjęcia przed i po praniu z Rzeszowa i okolic. ${service.description}`} noindex={photos.length === 0}>
+  <Breadcrumbs items={[{ name: 'Galeria', href: '/galeria' }, { name: cat.label, href: `/galeria/${cat.slug}` }]} />
+  <section class="wrap section top">
+    <div class="section-head">
+      <h1>{cat.label}: zdjęcia przed i po praniu</h1>
+      <p class="lead">Ceny i szczegóły: <a href={`/${service.slug}`}>{service.h1}</a>.</p>
+    </div>
+    <GalleryNav current={cat.slug} />
+    {photos.length > 0 ? <Gallery photos={photos} showCategory={false} /> : (
+      <div class="card empty"><h2>Zdjęcia z tej kategorii już wkrótce</h2></div>
+    )}
+  </section>
+  <CtaBand waText={service.waText} />
+</Base>
+<style>
+  .top { padding-top: 24px; }
+  .empty { padding: 32px; }
+</style>

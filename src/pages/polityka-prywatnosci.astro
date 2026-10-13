@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../data/site';
+---
+<Base title="Polityka prywatności – Mobilne Pranie Rzeszów" description="Jak przetwarzamy dane osób, które kontaktują się z nami przez telefon i WhatsApp.">
+  <Breadcrumbs items={[{ name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
+  <section class="wrap section">
+    <div class="prose">
+      <h1>Polityka prywatności</h1>
+      <p>Strona {SITE.domain} nie używa formularzy ani plików cookies do śledzenia użytkowników. Nie zbieramy danych przez stronę.</p>
+      <h2>Kontakt telefoniczny i WhatsApp</h2>
+      <p>Gdy dzwonisz lub piszesz na WhatsApp, widzimy Twój numer telefonu i to, co nam wyślesz: zdjęcia mebli, adres, termin. Używamy tych danych tylko do wyceny, umówienia i wykonania usługi oraz do wystawienia paragonu lub faktury.</p>
+      <p>Wiadomości przez WhatsApp przechodzą przez serwery WhatsApp (Meta). Zasady przetwarzania danych przez WhatsApp opisuje jego własna polityka prywatności.</p>
+      <h2>Jak długo przechowujemy dane</h2>
+      <p>Dane do rozliczeń przechowujemy tak długo, jak wymagają tego przepisy podatkowe. Pozostałe wiadomości usuwamy, gdy nie są już potrzebne do obsługi zlecenia lub reklamacji.</p>
+      <h2>Twoje prawa</h2>
+      <p>Możesz poprosić o wgląd w swoje dane, ich poprawienie lub usunięcie. Napisz lub zadzwoń: {SITE.phone}.</p>
+      <h2>Zdjęcia w galerii</h2>
+      <p>W galerii publikujemy zdjęcia mebli za zgodą klienta, bez danych osobowych, adresów i twarzy. Jeśli chcesz, żebyśmy usunęli zdjęcie, daj znać.</p>
+    </div>
+  </section>
+</Base>

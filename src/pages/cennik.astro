@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PriceTable from '../components/PriceTable.astro';
+import Extras from '../components/Extras.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, SERVICES, FAQ_GENERAL } from '../data/site';
+const faq = [
+  { q: 'Czy w cenie jest dojazd?', a: `Tak, w Rzeszowie i do ${SITE.freeRadiusKm} km od miasta. Dalej doliczamy ${SITE.travelFee} zł za dojazd.` },
+  { q: 'Dlaczego ceny są „od”?', a: 'Cena zależy od wielkości mebla, tkaniny i stopnia zabrudzenia. Dokładną kwotę podajemy po zdjęciu, zanim przyjedziemy.' },
+  { q: 'Czy taniej, jeśli pierzecie kilka rzeczy?', a: 'Tak. Przy kilku meblach w jednej wizycie dajemy rabat, bo odpada drugi dojazd i rozkładanie sprzętu.' },
+  FAQ_GENERAL[5], FAQ_GENERAL[6],
+];
+---
+<Base title="Cennik prania tapicerki Rzeszów 2026 – kanapa, narożnik, materac" description={`Cennik mobilnego prania tapicerki w Rzeszowie: kanapa od 149 zł, narożnik od 199 zł, krzesło od 19 zł, materac od 79 zł, dywan od 10 zł/m². Dojazd do ${SITE.freeRadiusKm} km w cenie.`}>
+  <Breadcrumbs items={[{ name: 'Cennik', href: '/cennik' }]} />
+  <section class="wrap section top">
+    <div class="section-head">
+      <h1>Cennik prania tapicerki w Rzeszowie</h1>
+      <p class="lead">Ceny brutto z dojazdem po Rzeszowie i do {SITE.freeRadiusKm} km od miasta. Przed przyjazdem podajemy dokładną kwotę ze zdjęcia.</p>
+    </div>
+    <div class="grid">
+      {SERVICES.map((s) => (
+        <div class="block">
+          <h2><a href={`/${s.slug}`}>{s.short}</a></h2>
+          <PriceTable rows={s.prices} />
+        </div>
+      ))}
+      <div class="block">
+        <h2>Dodatki</h2>
+        <Extras />
+      </div>
+    </div>
+  </section>
+  <section class="wrap section">
+    <div class="section-head"><h2>Pytania o ceny</h2></div>
+    <Faq items={faq} />
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  .top { padding-top: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+  .block { display: grid; gap: 12px; align-content: start; min-width: 0; }
+  .block h2 { font-size: 24px; }
+  .block h2 a { color: var(--ink); text-decoration: none; }
+  .block h2 a:hover { color: var(--primary); }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+</style>

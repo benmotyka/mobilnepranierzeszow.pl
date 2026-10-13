@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import { SITE, TOWNS, RZESZOW_DISTRICTS } from '../data/site';
+---
+<Base title="Pranie tapicerki z dojazdem – Rzeszów, osiedla i okolice" description={`Mobilne pranie tapicerki na każdym osiedlu Rzeszowa i w okolicach: ${TOWNS.map((t) => t.name).join(', ')}. Dojazd do ${SITE.freeRadiusKm} km w cenie.`}>
+  <Breadcrumbs items={[{ name: 'Obszar dojazdu', href: '/obszar-dojazdu' }]} />
+  <section class="wrap section top">
+    <div class="section-head">
+      <h1>Dokąd dojeżdżamy z praniem tapicerki</h1>
+      <p class="lead">Cały Rzeszów i miejscowości wokół miasta. Do {SITE.freeRadiusKm} km od Rzeszowa dojazd jest w cenie, dalej doliczamy {SITE.travelFee} zł.</p>
+    </div>
+    <div class="card box">
+      <h2>Rzeszów: wszystkie osiedla</h2>
+      <ul class="pills">{RZESZOW_DISTRICTS.map((d) => <li>{d}</li>)}</ul>
+      <p class="muted">Nie ma Twojego osiedla na liście? Dojedziemy na każde, to tylko najczęstsze.</p>
+    </div>
+    <h2 class="h2">Okolice Rzeszowa</h2>
+    <ul class="towns">
+      {TOWNS.map((t) => (
+        <li class="card">
+          <h3><a href={`/${t.slug}`}>Pranie tapicerki {t.name}</a></h3>
+          <p class="muted">{t.villages.join(', ')}</p>
+          <p class={t.travel === 'gratis' ? 'ok' : 'fee'}>{t.travel === 'gratis' ? 'Dojazd w cenie' : `Dojazd +${SITE.travelFee} zł`}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <section class="wrap section">
+    <Faq items={[
+      { q: 'Dojeżdżacie dalej niż do wymienionych miejscowości?', a: `Tak, zwykle do około 30 km od Rzeszowa, z dopłatą ${SITE.travelFee} zł. Przy większym zleceniu dopłatę często pomijamy. Zapytaj na WhatsApp.` },
+      { q: 'Czy dojazd jest płatny w Rzeszowie?', a: 'Nie. Na każde osiedle w Rzeszowie dojeżdżamy bez dopłat.' },
+    ]} />
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  .top { padding-top: 24px; }
+  .box { padding: clamp(18px, 3vw, 28px); display: grid; gap: 14px; }
+  .pills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .pills li { background: var(--soft); border-radius: 8px; padding: 5px 11px; font-weight: 600; font-size: 15px; }
+  .h2 { margin: 40px 0 16px; }
+  .towns { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 12px; }
+  .towns li { padding: 18px; display: grid; gap: 6px; align-content: start; }
+  .towns h3 a { color: var(--ink); text-decoration: none; }
+  .towns h3 a:hover { color: var(--primary); }
+  .towns .muted { font-size: 15px; }
+  .ok, .fee { font-weight: 700; font-size: 14px; }
+  .ok { color: var(--wa); } .fee { color: var(--muted); }
+</style>

@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, SERVICES } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('poradnik');
+  return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const service = SERVICES.find((s) => s.slug === post.data.service);
+const url = `${SITE.url}/poradnik/${post.id}`;
+const ld = {
+  '@context': 'https://schema.org', '@type': 'Article',
+  headline: post.data.h1, description: post.data.description, inLanguage: 'pl-PL',
+  datePublished: post.data.date.toISOString().slice(0, 10), mainEntityOfPage: url,
+  author: { '@id': `${SITE.url}/#firma` }, publisher: { '@id': `${SITE.url}/#firma` }, image: `${SITE.url}/og.png`,
+};
+const dateLabel = post.data.date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={post.data.title} description={post.data.description} ogType="article" schema={ld}>
+  <Breadcrumbs items={[{ name: 'Poradnik', href: '/poradnik' }, { name: post.data.h1, href: `/poradnik/${post.id}` }]} />
+  <article class="wrap section">
+    <div class="prose">
+      <h1>{post.data.h1}</h1>
+      <p class="muted meta">{dateLabel} · {SITE.name}</p>
+      <Content />
+      {service && <p class="card next">Nie chcesz się z tym męczyć? <a href={`/${service.slug}`}>{service.h1}</a>: wycena ze zdjęcia na WhatsApp.</p>}
+    </div>
+  </article>
+  <CtaBand />
+</Base>
+<style>
+  .meta { font-size: 15px; }
+  .next { padding: 18px 20px; margin-top: 2em; }
+</style>
