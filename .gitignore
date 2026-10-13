@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.DS_Store
+# Surowe zdjęcia z telefonu (mają GPS w EXIF). Do repo trafiają dopiero po `npm run zdjecia`.
+zdjecia-do-dodania/*
+!zdjecia-do-dodania/README.md
