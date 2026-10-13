@@ -1,0 +1,466 @@
+<title>Szaty graficzne mobilnepranierzeszow.pl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=Rubik:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=Shrikhand&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: narzędzie do porównania — pasek wyboru wariantu u góry, pod nim makieta strony w ramce przeglądarki, której szerokość przełączasz (komputer / telefon). */
+:root{
+  --bg:#f2f4f6; --surface:#ffffff; --fg:#1b2329; --muted:#5d6a74; --line:#d9dfe4; --accent:#1f5fbf;
+  --ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14181c;--surface:#1d2328;--fg:#e8edf1;--muted:#9aa7b1;--line:#2f383f;--accent:#7fb0ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181c;--surface:#1d2328;--fg:#e8edf1;--muted:#9aa7b1;--line:#2f383f;--accent:#7fb0ff;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:28px 60px}
+.top h1{font-size:clamp(22px,3vw,30px);margin:0 0 6px;text-wrap:balance;letter-spacing:-.01em}
+.top p{margin:0;color:var(--muted);max-width:70ch}
+.picker{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px}
+@media (max-width:820px){.picker{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pick{all:unset;cursor:pointer;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:6px;min-width:0}
+.pick:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pick[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.pick b{font-size:15px}
+.pick small{color:var(--muted);font-size:13px;line-height:1.35}
+.sw{display:flex;gap:4px}.sw i{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:18px 0 12px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.note div{min-width:0}.note h3{margin:0 0 2px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.note p{margin:0;font-size:14px}
+@media (max-width:720px){.note{grid-template-columns:1fr}}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{all:unset;cursor:pointer;padding:6px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:13px;color:var(--muted)}
+.browser{margin:0 auto;max-width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:0 10px 40px rgba(0,0,0,.08);transition:max-width .3s}
+.browser.phone{max-width:390px}
+.chrome{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.dots{display:flex;gap:5px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.url{flex:1;min-width:0;background:var(--bg);border-radius:8px;padding:4px 10px;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site{container-type:inline-size;container-name:site}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- wspólne makiety ---------- */
+.m{font-size:16px;line-height:1.55}
+.m h2,.m h3,.m p{margin:0}
+.m h2,.m h1{text-wrap:balance}
+.m .in{padding-inline:clamp(18px,5cqi,56px)}
+.m a{color:inherit}
+.ph{position:relative;border-radius:inherit;overflow:hidden;aspect-ratio:4/3}
+.tag{position:absolute;left:10px;top:10px;font:600 11px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:rgba(255,255,255,.92);color:#1b2329}
+.cap{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;font:500 13px/1.3 var(--ui);color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55))}
+.price{font-variant-numeric:tabular-nums}
+
+/* ---------- A: Czysto i jasno ---------- */
+.oA{--a-bg:#f4f9fb;--a-ink:#0d2b3e;--a-mut:#4b6575;--a-pri:#1550a8;--a-aq:#27b8c0;--a-soft:#e1f1f5;--a-line:#cfe2e9;
+  background:var(--a-bg);color:var(--a-ink);font-family:"Figtree",system-ui,sans-serif}
+.oA .disp{font-family:"Bricolage Grotesque","Figtree",sans-serif}
+.oA nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px}
+.oA .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;letter-spacing:-.01em}
+.oA .logo span{color:var(--a-aq)}
+.oA nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-weight:500;color:var(--a-mut)}
+.oA .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none;border:0;font-size:15px}
+.oA .btn.p{background:var(--a-pri);color:#fff}.oA .btn.s{background:#fff;color:var(--a-pri);border:1.5px solid var(--a-line)}
+.oA .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding-block:34px 50px}
+.oA h1{font-size:clamp(34px,5.4cqi,58px);line-height:1.02;letter-spacing:-.025em;font-weight:800}
+.oA h1 em{font-style:normal;color:var(--a-pri);background:linear-gradient(transparent 62%,var(--a-soft) 62%)}
+.oA .lead{color:var(--a-mut);font-size:18px;margin:18px 0 24px;max-width:46ch}
+.oA .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.oA .chips{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:14px;color:var(--a-mut)}
+.oA .chips b{color:var(--a-ink)}
+.oA .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#fff;padding:8px;border-radius:18px;box-shadow:0 20px 50px rgba(13,43,62,.12)}
+.oA .pair .ph{border-radius:12px;aspect-ratio:3/4}
+.oA section{padding-block:46px}
+.oA .h2{font-size:clamp(26px,3.6cqi,38px);letter-spacing:-.02em;font-weight:700;margin-bottom:22px}
+.oA .eyebrow{font-size:13px;font-weight:700;color:var(--a-aq);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.oA .list{background:#fff;border:1px solid var(--a-line);border-radius:16px}
+.oA .row{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 20px;border-top:1px solid var(--a-line)}
+.oA .row:first-child{border-top:0}
+.oA .row b{font-size:17px}.oA .row small{color:var(--a-mut);grid-column:1}
+.oA .row .price{grid-row:1/3;grid-column:2;align-self:center;font-weight:700;color:var(--a-pri);font-size:18px}
+.oA .cols{display:grid;grid-template-columns:1.2fr 1fr;gap:36px;align-items:start}
+.oA .extras{display:grid;gap:10px}
+.oA .extra{background:var(--a-soft);border-radius:12px;padding:14px 16px}
+.oA .extra b{display:block}.oA .extra small{color:var(--a-mut)}
+.oA .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.oA .step{padding-top:16px;border-top:3px solid var(--a-aq)}
+.oA .step::before{counter-increment:s;content:"Krok " counter(s);font-size:13px;font-weight:700;color:var(--a-aq);text-transform:uppercase;letter-spacing:.08em}
+.oA .step b{display:block;font-size:19px;margin:4px 0}.oA .step p{color:var(--a-mut)}
+.oA .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.oA .gal .ph{border-radius:12px}
+.oA .gal .ph:nth-child(1){grid-row:span 2;aspect-ratio:auto}
+.oA .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.oA .filters span{padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--a-line);font-size:14px;font-weight:600}
+.oA .filters span:first-child{background:var(--a-ink);color:#fff;border-color:var(--a-ink)}
+.oA .area{background:var(--a-soft);border-radius:20px;padding:28px;display:grid;grid-template-columns:1fr 1.3fr;gap:24px;align-items:center}
+.oA .towns{display:flex;flex-wrap:wrap;gap:8px}
+.oA .towns span{background:#fff;border-radius:8px;padding:6px 10px;font-weight:600;font-size:14px}
+.oA .cta{background:var(--a-pri);color:#fff;border-radius:22px;padding:34px;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center}
+.oA .cta h2{font-size:clamp(24px,3.4cqi,34px);letter-spacing:-.02em}
+.oA .cta .btn.p{background:#fff;color:var(--a-pri)}
+.oA footer{padding-block:26px;color:var(--a-mut);font-size:14px}
+@container site (max-width:700px){
+  .oA nav ul{display:none}.oA .hero,.oA .cols,.oA .area{grid-template-columns:1fr}
+  .oA .steps{grid-template-columns:1fr}.oA .gal{grid-template-columns:1fr 1fr}
+  .oA .gal .ph:nth-child(1){grid-row:auto;aspect-ratio:4/3}
+}
+
+/* ---------- B: Przed i po ---------- */
+.oB{--b-dk:#202428;--b-dk2:#2b3036;--b-y:#ffcf2e;--b-lt:#f1f2f3;--b-mut:#6b737b;--b-wh:#fff;
+  background:var(--b-wh);color:var(--b-dk);font-family:"Barlow",system-ui,sans-serif}
+.oB .disp{font-family:"Barlow Condensed","Barlow",sans-serif;text-transform:uppercase;letter-spacing:.005em}
+.oB nav{background:var(--b-dk);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:14px}
+.oB .logo{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.02em}
+.oB .logo span{background:var(--b-y);color:var(--b-dk);padding:0 6px;margin-left:4px}
+.oB .tel{font-weight:600;color:var(--b-y);white-space:nowrap}
+.oB .hero{position:relative;background:var(--b-dk);color:#fff}
+.oB .ba{position:relative;aspect-ratio:16/7;overflow:hidden}
+.oB .ba .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0}
+.oB .ba .after{clip-path:inset(0 0 0 var(--cut,50%))}
+.oB .ba .handle{position:absolute;top:0;bottom:0;left:var(--cut,50%);width:3px;background:var(--b-y);transform:translateX(-50%);pointer-events:none}
+.oB .ba .handle::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:var(--b-y);color:var(--b-dk);display:grid;place-items:center;font-weight:800}
+.oB .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.oB .ba .l,.oB .ba .r{position:absolute;bottom:14px;font:700 13px/1 "Barlow",sans-serif;letter-spacing:.12em;text-transform:uppercase;background:var(--b-dk);color:#fff;padding:7px 10px}
+.oB .ba .l{left:14px}.oB .ba .r{right:14px;background:var(--b-y);color:var(--b-dk)}
+.oB .hero .txt{padding-block:28px 34px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:end}
+.oB h1{font-size:clamp(44px,8cqi,96px);line-height:.88;font-weight:800}
+.oB h1 span{color:var(--b-y)}
+.oB .hero p{color:#c9ced3;font-size:17px;max-width:42ch}
+.oB .btn{display:inline-block;margin-top:14px;background:var(--b-y);color:var(--b-dk);font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:20px;letter-spacing:.03em;padding:12px 20px;text-decoration:none}
+.oB .stripe{background:var(--b-y);color:var(--b-dk);display:flex;flex-wrap:wrap;gap:6px 28px;padding-block:12px;font-weight:600;font-size:15px}
+.oB section{padding-block:48px}
+.oB .h2{font-size:clamp(32px,5cqi,54px);font-weight:800;line-height:.95;margin-bottom:24px}
+.oB .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--b-dk)}
+.oB .tile{background:var(--b-wh);padding:20px;display:grid;gap:4px}
+.oB .tile .price{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:40px;line-height:1}
+.oB .tile .price small{font-size:18px;color:var(--b-mut)}
+.oB .tile b{font-size:17px}.oB .tile span{color:var(--b-mut);font-size:14px}
+.oB .addon{margin-top:18px;background:var(--b-lt);padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px}
+.oB .addon b{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;font-size:18px}
+.oB .dark{background:var(--b-dk);color:#fff}
+.oB .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.oB .step .n{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:72px;line-height:.8;color:var(--b-y)}
+.oB .step b{display:block;font-size:20px;margin:8px 0 4px}.oB .step p{color:#b8bec4}
+.oB .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.oB .split{position:relative;aspect-ratio:1}
+.oB .split .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0}
+.oB .split .ph.after{clip-path:polygon(100% 0,100% 100%,0 100%)}
+.oB .split .cap{z-index:1}
+.oB .more{margin-top:14px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:14px}
+.oB .area{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.oB .towns{columns:2;font-weight:600;font-size:17px}
+.oB .cta{background:var(--b-y);padding-block:34px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.oB .cta .h2{margin:0}
+.oB .cta .btn{background:var(--b-dk);color:var(--b-y);margin:0}
+.oB footer{background:var(--b-dk);color:#9aa2a9;padding-block:20px;font-size:14px}
+@container site (max-width:700px){
+  .oB .ba{aspect-ratio:4/3}.oB .hero .txt,.oB .area{grid-template-columns:1fr}
+  .oB .tiles{grid-template-columns:1fr 1fr}.oB .steps{grid-template-columns:1fr}.oB .gal{grid-template-columns:1fr 1fr}
+}
+
+/* ---------- C: Domowo ---------- */
+.oC{--c-bg:#f2f6f1;--c-ink:#22302a;--c-mut:#58675f;--c-gr:#2f7553;--c-gr2:#dcebdf;--c-sun:#f5c14e;--c-wh:#fff;
+  background:var(--c-bg);color:var(--c-ink);font-family:"Nunito Sans",system-ui,sans-serif}
+.oC .disp{font-family:"Rubik","Nunito Sans",sans-serif}
+.oC nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:16px}
+.oC .logo{font-family:"Rubik",sans-serif;font-weight:700;font-size:19px;display:flex;align-items:center;gap:8px}
+.oC .logo i{width:30px;height:30px;border-radius:50%;background:var(--c-gr);display:grid;place-items:center}
+.oC .btn{display:inline-block;background:var(--c-gr);color:#fff;font-weight:700;padding:13px 22px;border-radius:999px;text-decoration:none}
+.oC .btn.s{background:var(--c-wh);color:var(--c-gr)}
+.oC .hero{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;padding-block:20px 50px}
+.oC h1{font-family:"Rubik",sans-serif;font-weight:700;font-size:clamp(32px,5cqi,54px);line-height:1.08;letter-spacing:-.015em}
+.oC h1 mark{background:var(--c-sun);color:inherit;padding:0 .15em;border-radius:.25em}
+.oC .lead{font-size:18px;color:var(--c-mut);margin:16px 0 22px;max-width:44ch}
+.oC .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.oC .blob{position:relative}
+.oC .blob .ph{border-radius:48% 52% 44% 56% / 55% 45% 55% 45%;aspect-ratio:1}
+.oC .badge{position:absolute;background:var(--c-wh);border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(34,48,42,.14);font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.oC .badge.b1{left:-6px;bottom:18%}.oC .badge.b2{right:-4px;top:12%}
+.oC section{padding-block:44px}
+.oC .h2{font-family:"Rubik",sans-serif;font-weight:700;font-size:clamp(26px,3.6cqi,38px);margin-bottom:20px}
+.oC .who{display:flex;flex-wrap:wrap;gap:10px}
+.oC .who span{background:var(--c-wh);border-radius:999px;padding:9px 16px;font-weight:700;display:flex;gap:8px;align-items:center}
+.oC .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.oC .card{background:var(--c-wh);border-radius:22px;padding:20px;display:grid;gap:6px;align-content:start}
+.oC .card .ic{width:44px;height:44px;border-radius:14px;background:var(--c-gr2);display:grid;place-items:center}
+.oC .card b{font-family:"Rubik",sans-serif;font-size:18px;font-weight:600}
+.oC .card small{color:var(--c-mut)}
+.oC .card .price{font-weight:700;color:var(--c-gr);font-size:18px}
+.oC .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.oC .step{background:var(--c-gr);color:#fff;border-radius:22px;padding:20px}
+.oC .step .n{width:34px;height:34px;border-radius:50%;background:var(--c-sun);color:var(--c-ink);display:grid;place-items:center;font-weight:800;font-family:"Rubik",sans-serif}
+.oC .step b{display:block;font-family:"Rubik",sans-serif;font-size:18px;margin:10px 0 4px;font-weight:600}
+.oC .step p{color:#d5e8db}
+.oC .strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,30%);gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+.oC .strip .ph{border-radius:20px;scroll-snap-align:start}
+.oC .rev{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.oC .rev div{background:var(--c-wh);border-radius:22px;padding:18px}
+.oC .stars{color:#e0a100;letter-spacing:2px}
+.oC .rev p{margin:6px 0;color:var(--c-ink)}.oC .rev small{color:var(--c-mut)}
+.oC .cta{background:var(--c-sun);border-radius:28px;padding:30px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.oC footer{padding-block:24px;color:var(--c-mut);font-size:14px}
+@container site (max-width:700px){
+  .oC .hero{grid-template-columns:1fr}.oC .cards,.oC .steps,.oC .rev{grid-template-columns:1fr}
+  .oC .strip{grid-auto-columns:78%}.oC nav .btn{display:none}
+}
+
+/* ---------- D: Pralnia retro ---------- */
+.oD{--d-bg:#e9f5f2;--d-tile:#c9e8e1;--d-teal:#0e5f5f;--d-or:#ef7438;--d-ink:#173434;--d-paper:#fbfdfc;--d-mut:#4d6b69;
+  background:var(--d-bg);color:var(--d-ink);font-family:"DM Sans",system-ui,sans-serif}
+.oD .disp{font-family:"Shrikhand",Georgia,serif;font-weight:400}
+.oD .tiles-bg{background-color:var(--d-bg);background-image:linear-gradient(var(--d-tile) 2px,transparent 2px),linear-gradient(90deg,var(--d-tile) 2px,transparent 2px);background-size:34px 34px}
+.oD nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:14px;background:var(--d-teal);color:#fff}
+.oD .logo{font-family:"Shrikhand",serif;font-size:22px}
+.oD .logo small{font-family:"DM Sans",sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-left:8px;border:1.5px solid #fff;border-radius:4px;padding:2px 6px;vertical-align:middle}
+.oD .hero{padding-block:44px 54px;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center}
+.oD .sign{background:var(--d-paper);border:3px solid var(--d-teal);border-radius:20px;padding:28px;box-shadow:8px 8px 0 var(--d-teal)}
+.oD h1{font-family:"Shrikhand",serif;font-weight:400;font-size:clamp(34px,5.6cqi,62px);line-height:1.02;color:var(--d-teal)}
+.oD h1 span{color:var(--d-or)}
+.oD .lead{font-size:18px;color:var(--d-mut);margin:14px 0 20px}
+.oD .btn{display:inline-block;background:var(--d-or);color:#fff;font-weight:700;padding:13px 20px;border-radius:12px;text-decoration:none;box-shadow:0 4px 0 #b9521f}
+.oD .machine{justify-self:center;width:min(300px,100%);aspect-ratio:.82;background:var(--d-paper);border:3px solid var(--d-teal);border-radius:24px;padding:18px;display:grid;grid-template-rows:auto 1fr;gap:14px}
+.oD .machine .panel{display:flex;gap:8px;align-items:center}
+.oD .machine .panel i{width:14px;height:14px;border-radius:50%;background:var(--d-or)}
+.oD .machine .panel i+i{background:var(--d-tile)}
+.oD .machine .panel span{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--d-teal)}
+.oD .drum{border-radius:50%;border:10px solid var(--d-tile);overflow:hidden;align-self:center;aspect-ratio:1}
+.oD .drum .ph{aspect-ratio:1;border-radius:50%}
+.oD section{padding-block:44px}
+.oD .h2{font-family:"Shrikhand",serif;font-weight:400;font-size:clamp(28px,4cqi,42px);color:var(--d-teal);margin-bottom:20px}
+.oD .board{background:var(--d-teal);color:#fff;border-radius:18px;padding:24px 26px;display:grid;grid-template-columns:1fr 1fr;gap:6px 40px}
+.oD .board .r{display:flex;align-items:baseline;gap:8px;padding-block:8px;border-bottom:1px dashed rgba(255,255,255,.3)}
+.oD .board .r b{font-weight:500}.oD .board .r i{flex:1;border-bottom:2px dotted rgba(255,255,255,.45);transform:translateY(-4px)}
+.oD .board .r .price{font-weight:700;color:#ffd2b8}
+.oD .board h3{grid-column:1/-1;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#a9d6cf;margin-top:10px}
+.oD .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.oD .step{background:var(--d-paper);border:2px solid var(--d-teal);border-radius:16px;padding:18px}
+.oD .step .n{font-family:"Shrikhand",serif;font-size:34px;color:var(--d-or);line-height:1}
+.oD .step b{display:block;margin:6px 0 2px;font-size:18px}.oD .step p{color:var(--d-mut)}
+.oD .pola{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:8px}
+.oD .pol{background:var(--d-paper);padding:10px 10px 14px;box-shadow:0 8px 20px rgba(14,95,95,.16);transform:rotate(var(--rot,0deg))}
+.oD .pol .ph{border-radius:0}
+.oD .pol p{font-size:14px;margin-top:8px;font-weight:500;text-align:center}
+.oD .ticket{background:var(--d-or);color:#fff;border-radius:16px;padding:26px 30px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;
+  -webkit-mask:radial-gradient(circle 14px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 14px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 14px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 14px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat}
+.oD .ticket .disp{font-size:clamp(24px,3.4cqi,34px)}
+.oD .ticket .btn{background:var(--d-paper);color:var(--d-teal);box-shadow:0 4px 0 #c2d9d4}
+.oD .towns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.oD .towns span{border:2px solid var(--d-teal);border-radius:999px;padding:5px 12px;font-weight:700;color:var(--d-teal);background:var(--d-paper)}
+.oD footer{background:var(--d-teal);color:#bfe0da;padding-block:20px;font-size:14px}
+@container site (max-width:700px){
+  .oD .hero{grid-template-columns:1fr}.oD .board{grid-template-columns:1fr}
+  .oD .steps{grid-template-columns:1fr}.oD .pola{grid-template-columns:1fr 1fr;gap:14px}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Szaty graficzne dla mobilnepranierzeszow.pl</h1>
+    <p>Cztery kierunki tej samej strony. Treść jest wszędzie ta sama, różni się charakter. Ceny, numer telefonu, opinie i zdjęcia są przykładowe: zdjęcia to na razie zaślepki „przed / po”, w ich miejsce wejdą Wasze.</p>
+  </header>
+
+  <div class="picker" role="tablist" aria-label="Wybór wariantu" id="picker"></div>
+
+  <div class="bar">
+    <span class="hint" id="hint">Przełącz na widok telefonu: większość klientów wejdzie z reklamy na Facebooku, czyli z komórki.</span>
+    <div class="seg" role="group" aria-label="Szerokość podglądu">
+      <button type="button" id="w-desk" aria-pressed="true">Komputer</button>
+      <button type="button" id="w-phone" aria-pressed="false">Telefon</button>
+    </div>
+  </div>
+
+  <div class="note" id="note"></div>
+
+  <div class="browser" id="browser">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">mobilnepranierzeszow.pl</div></div>
+    <div class="site" id="site"></div>
+  </div>
+</div>
+
+<script>
+const TEL = "600 000 000";
+const S = [
+  {n:"Narożnik", p:"od 199 zł", d:"Siedziska, oparcia, boki i poduszki"},
+  {n:"Kanapa 3-osobowa", p:"od 149 zł", d:"Z poduszkami, bez zdejmowania pokrowców"},
+  {n:"Fotel", p:"od 59 zł", d:"Uszak, fotel wypoczynkowy, pufa"},
+  {n:"Krzesło tapicerowane", p:"od 19 zł", d:"Siedzisko lub siedzisko z oparciem"},
+  {n:"Materac", p:"od 79 zł", d:"Jedna strona, pranie i głębokie odkurzanie"},
+  {n:"Dywan i wykładzina", p:"od 10 zł/m²", d:"Pranie na miejscu, bez wywożenia"}
+];
+const X = [
+  {n:"Impregnacja", p:"+ od 49 zł", d:"Plamy po soku i kawie schodzą jedną ściereczką"},
+  {n:"Ozonowanie", p:"+ od 39 zł", d:"Zapach psa, kota i dymu znika przy okazji prania"},
+  {n:"Tapicerka auta", p:"+ od 199 zł", d:"Pierzemy fotele samochodu na Twoim podjeździe"}
+];
+const STEPS = [
+  {b:"Wyślij zdjęcie", p:"SMS lub WhatsApp ze zdjęciem mebla. Wycenę dostajesz w 15 minut."},
+  {b:"Umawiamy termin", p:"Także w soboty. Przyjeżdżamy z całym sprzętem i chemią."},
+  {b:"Pierzemy u Ciebie", p:"Bez wynoszenia mebli. Tapicerka schnie zwykle kilka godzin."}
+];
+const TOWNS = ["Rzeszów","Tyczyn","Boguchwała","Krasne","Głogów Małopolski","Trzebownisko","Świlcza","Lubenia"];
+const GAL = [
+  {t:"Narożnik, Słocina", h:28, c:"narozniki"},{t:"Kanapa, Baranówka", h:205, c:"kanapy"},
+  {t:"Materac, Tyczyn", h:40, c:"materace"},{t:"Fotel, Drabinianka", h:145, c:"fotele"},
+  {t:"Krzesła, Staromieście", h:12, c:"krzesla"},{t:"Dywan, Krasne", h:350, c:"dywany"}
+];
+const REV = [
+  {p:"Kanapa po dwóch psach wygląda jak nowa. Przyjechali w sobotę rano, po południu można było siedzieć.", a:"Kasia, Pobitno"},
+  {p:"Szybka wycena ze zdjęcia, bez ukrytych dopłat. Polecam na materace dla alergików.", a:"Tomek, Nowe Miasto"},
+  {p:"Pranie narożnika i krzeseł przed komunią. Punktualnie i porządnie.", a:"Pani Ewa, Boguchwała"}
+];
+
+/* Zaślepka zdjęcia: tkanina „przed” (brudna, plamy) i „po” (czysta). */
+function fab(h, dirty){
+  const base = dirty ? `hsl(${h} 14% 46%)` : `hsl(${h} 32% 62%)`;
+  const weave = `repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 2px,transparent 2px 6px),repeating-linear-gradient(-45deg,rgba(0,0,0,.05) 0 2px,transparent 2px 6px)`;
+  const light = `radial-gradient(120% 80% at 30% 15%,rgba(255,255,255,${dirty?.08:.28}),transparent 60%)`;
+  const stains = dirty ? `radial-gradient(18% 14% at 28% 62%,rgba(60,38,18,.55),transparent 70%),radial-gradient(12% 10% at 70% 35%,rgba(70,45,20,.45),transparent 70%),radial-gradient(26% 18% at 62% 78%,rgba(50,35,20,.35),transparent 70%),radial-gradient(9% 8% at 44% 28%,rgba(40,28,15,.5),transparent 70%),` : "";
+  return `background:${stains}${light},${weave},${base}`;
+}
+const ph = (g, dirty, extra="", cls="") =>
+  `<div class="ph ${cls}" style="${fab(g.h, dirty)}">${extra}</div>`;
+const icon = (d) => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const I = {
+  sofa:'<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M3 11a2 2 0 0 1 2 2v2h14v-2a2 2 0 1 1 2 2v3H3v-3a2 2 0 0 1 0-4z"/><path d="M5 18v2M19 18v2"/>',
+  bed:'<path d="M3 18V8M3 14h18v4M21 18v-4a3 3 0 0 0-3-3h-8v3"/><circle cx="7" cy="11" r="1.6"/>',
+  rug:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M5 7h14M5 17h14M3 5h2M3 19h2M19 5h2M19 19h2"/>',
+  chair:'<path d="M7 3h10v9H7zM6 12h12v3H6zM7 15v6M17 15v6"/>',
+  drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+  paw:'<circle cx="7" cy="9" r="1.6"/><circle cx="12" cy="6.5" r="1.6"/><circle cx="17" cy="9" r="1.6"/><path d="M8 16c0-2.5 2-4.5 4-4.5s4 2 4 4.5c0 1.6-1.4 2.5-4 2.5s-4-.9-4-2.5z"/>',
+  kid:'<circle cx="12" cy="6" r="2.5"/><path d="M8 21v-6l-2-3 3-2h6l3 2-2 3v6"/>',
+  leaf:'<path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7"/>',
+  home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>'
+};
+const ICS = [I.sofa,I.sofa,I.chair,I.chair,I.bed,I.rug];
+
+const V = {
+A:{name:"A. Czysto i jasno", sw:["#f4f9fb","#1550a8","#27b8c0"], short:"Jasna, spokojna, „jak z dobrej firmy”.",
+  note:["Profesjonalna i neutralna: biel, kobalt, akcent wody. Przejrzysty cennik w wierszach, galeria z filtrami kategorii.","Najbezpieczniejszy wybór. Pasuje do każdego klienta i dobrze zniesie setki zdjęć w galerii.","Najmniej charakterystyczna. W reklamach trzeba ją wyróżnić zdjęciami."],
+  html:()=>`<div class="m oA">
+  <nav class="in"><div class="logo disp">${icon(I.drop)}mobilne pranie<span>.</span>rzeszów</div>
+    <ul><li>Cennik</li><li>Galeria</li><li>Dojazd</li></ul>
+    <a class="btn p" href="#">Wycena</a></nav>
+  <div class="hero in">
+    <div><h1 class="disp">Pranie kanap i narożników <em>u Ciebie w domu</em></h1>
+      <p class="lead">Przyjeżdżamy z profesjonalnym sprzętem do Rzeszowa i okolic. Nie wynosisz mebli, płacisz za efekt.</p>
+      <div class="ctas"><a class="btn p" href="#">Wyślij zdjęcie, wycenimy w 15 min</a><a class="btn s" href="#">Zadzwoń ${TEL}</a></div>
+      <div class="chips"><span><b>Soboty</b> też</span><span><b>Dojazd po Rzeszowie</b> gratis</span><span><b>Bezpieczne</b> dla dzieci i zwierząt</span></div>
+    </div>
+    <div class="pair">${ph(GAL[0],1,'<span class="tag">Przed</span>')}${ph(GAL[0],0,'<span class="tag">Po</span>')}</div>
+  </div>
+  <section class="in"><div class="cols">
+    <div><p class="eyebrow">Cennik</p><h2 class="h2 disp">Ile kosztuje pranie?</h2>
+      <div class="list">${S.map(s=>`<div class="row"><b>${s.n}</b><span class="price">${s.p}</span><small>${s.d}</small></div>`).join("")}</div></div>
+    <div><p class="eyebrow">Przy okazji</p><h2 class="h2 disp">Dodatki</h2>
+      <div class="extras">${X.map(x=>`<div class="extra"><b>${x.n} <span class="price">${x.p}</span></b><small>${x.d}</small></div>`).join("")}</div></div>
+  </div></section>
+  <section class="in"><p class="eyebrow">Jak to działa</p><h2 class="h2 disp">Trzy kroki, zero dźwigania</h2>
+    <div class="steps">${STEPS.map(s=>`<div class="step"><b>${s.b}</b><p>${s.p}</p></div>`).join("")}</div></section>
+  <section class="in"><p class="eyebrow">Galeria</p><h2 class="h2 disp">Nasze prania z Rzeszowa</h2>
+    <div class="filters"><span>Wszystko</span><span>Narożniki</span><span>Kanapy</span><span>Materace</span><span>Dywany</span><span>Auta</span></div>
+    <div class="gal">${GAL.map((g,i)=>ph(g,i%2,`<span class="tag">${i%2?"Przed":"Po"}</span><span class="cap">${g.t}</span>`)).join("")}</div></section>
+  <section class="in"><div class="area"><div><p class="eyebrow">Dojazd</p><h2 class="h2 disp" style="margin:0">Gdzie przyjeżdżamy</h2><p style="color:var(--a-mut);margin-top:8px">Rzeszów bez dopłaty. Okolice do 25 km: +30 zł.</p></div>
+    <div class="towns">${TOWNS.map(t=>`<span>${t}</span>`).join("")}</div></div></section>
+  <section class="in"><div class="cta"><h2 class="disp">Wyślij zdjęcie mebla, odpiszemy z ceną</h2><a class="btn p" href="#">WhatsApp ${TEL}</a></div></section>
+  <footer class="in">mobilnepranierzeszow.pl · Rzeszów i okolice · tel. ${TEL}</footer>
+</div>`},
+
+B:{name:"B. Przed i po", sw:["#202428","#ffcf2e","#f1f2f3"], short:"Mocna, jak studio detailingowe.",
+  note:["Grafit i żółć, wąskie wielkie litery. Na górze suwak „przed / po” do przeciągania palcem. Galeria to same pary zdjęć.","Najlepiej sprzedaje efekt i łączy się z marką studia Szpalka. Świetna pod reklamy i rolki.","Trochę „męska” i techniczna. Wymaga dobrych par zdjęć z tego samego kadru."],
+  html:()=>`<div class="m oB">
+  <nav class="in"><div class="logo">Mobilne pranie<span>Rzeszów</span></div><span class="tel">${TEL}</span></nav>
+  <div class="hero">
+    <div class="ba" id="ba">${ph(GAL[1],1)}${ph(GAL[1],0,"","after")}<div class="handle"></div><span class="l">Przed</span><span class="r">Po</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Przesuń, żeby porównać przed i po" id="ba-range"></div>
+    <div class="txt in"><h1 class="disp">Widać<br><span>różnicę.</span></h1>
+      <div><p>Pierzemy kanapy, narożniki, materace i dywany na miejscu, w Twoim domu. Rzeszów i okolice, także w soboty.</p><a class="btn" href="#">Wycena ze zdjęcia</a></div></div>
+  </div>
+  <div class="stripe in"><span>✓ Dojazd po Rzeszowie gratis</span><span>✓ Wycena w 15 minut</span><span>✓ Sprzęt jak w studiu detailingowym</span></div>
+  <section class="in"><h2 class="h2 disp">Cennik</h2>
+    <div class="tiles">${S.map(s=>{const m=s.p.match(/^od (\d+) (.+)$/);return `<div class="tile"><span>od</span><span class="price">${m[1]}<small> ${m[2]}</small></span><b>${s.n}</b><span>${s.d}</span></div>`}).join("")}</div>
+    <div class="addon"><b>Przy okazji:</b>${X.map(x=>`<span>${x.n} <strong class="price">${x.p}</strong></span>`).join("")}</div></section>
+  <section class="dark"><div class="in"><h2 class="h2 disp">Jak to działa</h2>
+    <div class="steps">${STEPS.map((s,i)=>`<div class="step"><div class="n">${i+1}</div><b>${s.b}</b><p>${s.p}</p></div>`).join("")}</div></div></section>
+  <section class="in"><h2 class="h2 disp">Efekty z Rzeszowa</h2>
+    <div class="gal">${GAL.map(g=>`<div class="split">${ph(g,1)}${ph(g,0,"","after")}<span class="cap">${g.t}</span></div>`).join("")}</div>
+    <p class="more">Zobacz wszystkie realizacje →</p></section>
+  <section class="in" style="padding-top:0"><div class="area"><h2 class="h2 disp" style="margin:0">Dojeżdżamy</h2><div class="towns">${TOWNS.map(t=>`<div>${t}</div>`).join("")}</div></div></section>
+  <div class="cta in"><h2 class="h2 disp">Wyślij zdjęcie. Resztą zajmiemy się my.</h2><a class="btn" href="#">WhatsApp ${TEL}</a></div>
+  <footer class="in">mobilnepranierzeszow.pl · tel. ${TEL}</footer>
+</div>`},
+
+C:{name:"C. Domowo", sw:["#f2f6f1","#2f7553","#f5c14e"], short:"Ciepła, rodzinna, „dla dzieci i zwierząt”.",
+  note:["Szałwiowa zieleń i słoneczny żółty, zaokrąglone kształty. Mocno akcentuje, dla kogo jest usługa: rodzice, psiarze, alergicy.","Najlepiej pasuje do strategii zaufania: miękka, przyjazna, z opiniami na wierzchu. Trafia do kobiet 28–50, czyli głównych decydentek.","Opinie muszą być prawdziwe. Na start sekcja opinii będzie pusta, dopóki nie zbierzecie pierwszych z Google."],
+  html:()=>`<div class="m oC">
+  <nav class="in"><div class="logo"><i style="color:#fff">${icon(I.home)}</i>Mobilne Pranie Rzeszów</div><a class="btn" href="#">${TEL}</a></nav>
+  <div class="hero in">
+    <div><h1>Czysta kanapa bez wychodzenia z&nbsp;domu. <mark>Przyjedziemy.</mark></h1>
+      <p class="lead">Pierzemy meble, materace i dywany u Ciebie, środkami bezpiecznymi dla dzieci i zwierząt. Rzeszów i okolice.</p>
+      <div class="ctas"><a class="btn" href="#">Wyślij zdjęcie do wyceny</a><a class="btn s" href="#">Zobacz cennik</a></div></div>
+    <div class="blob">${ph(GAL[3],0)}
+      <div class="badge b1"><span style="color:var(--c-gr)">${icon(I.paw)}</span>Bezpieczne dla zwierząt</div>
+      <div class="badge b2"><span style="color:var(--c-gr)">${icon(I.kid)}</span>i dla dzieci</div></div>
+  </div>
+  <section class="in" style="padding-top:0"><div class="who">
+    <span>${icon(I.paw)} Masz psa lub kota</span><span>${icon(I.kid)} Masz małe dzieci</span><span>${icon(I.leaf)} Jesteś alergikiem</span><span>${icon(I.home)} Wynajmujesz mieszkanie</span></div></section>
+  <section class="in"><h2 class="h2">Co pierzemy i za ile</h2>
+    <div class="cards">${S.map((s,i)=>`<div class="card"><span class="ic" style="color:var(--c-gr)">${icon(ICS[i])}</span><b>${s.n}</b><small>${s.d}</small><span class="price">${s.p}</span></div>`).join("")}</div></section>
+  <section class="in"><h2 class="h2">Jak to wygląda</h2>
+    <div class="steps">${STEPS.map((s,i)=>`<div class="step"><span class="n">${i+1}</span><b>${s.b}</b><p>${s.p}</p></div>`).join("")}</div></section>
+  <section class="in"><h2 class="h2">Zobacz efekty</h2>
+    <div class="strip">${GAL.map((g,i)=>ph(g,0,`<span class="tag">Po</span><span class="cap">${g.t}</span>`)).join("")}</div></section>
+  <section class="in"><h2 class="h2">Co mówią sąsiedzi</h2>
+    <div class="rev">${REV.map(r=>`<div><span class="stars">★★★★★</span><p>${r.p}</p><small>${r.a}</small></div>`).join("")}</div></section>
+  <section class="in"><div class="cta"><div><h2 class="h2" style="margin:0">Pierwsze pranie? −10%</h2><p>Dojeżdżamy: ${TOWNS.join(", ")}.</p></div><a class="btn" href="#">Napisz na WhatsApp</a></div></section>
+  <footer class="in">mobilnepranierzeszow.pl · tel. ${TEL}</footer>
+</div>`},
+
+D:{name:"D. Pralnia retro", sw:["#e9f5f2","#0e5f5f","#ef7438"], short:"Zabawna, z charakterem, zapada w pamięć.",
+  note:["Kafelki jak w starej pralni, morski turkus i pomarańcz, cennik jak tablica w barze. Galeria jako polaroidy.","Najbardziej rozpoznawalna. Dobra na ulotki, naklejkę na Berlingo i social media, ludzie ją zapamiętają.","Ryzyko, że wyda się mniej poważna przy droższych zleceniach. Przy setkach zdjęć polaroidy trzeba uprościć."],
+  html:()=>`<div class="m oD">
+  <nav class="in"><div class="logo">Mobilne Pranie<small>Rzeszów</small></div><span style="font-weight:700">${TEL}</span></nav>
+  <div class="tiles-bg"><div class="hero in">
+    <div class="sign"><h1>Pralnia, która <span>przyjeżdża</span> do Ciebie</h1>
+      <p class="lead">Kanapy, narożniki, materace i dywany prane na miejscu. Rzeszów i okolice, także w soboty.</p>
+      <a class="btn" href="#">Wyślij zdjęcie, wycenimy w 15 min</a></div>
+    <div class="machine"><div class="panel"><i></i><i></i><span>PROGRAM: KANAPA</span></div><div class="drum">${ph(GAL[5],0)}</div></div>
+  </div></div>
+  <section class="in"><h2 class="h2">Cennik</h2>
+    <div class="board"><h3>Pranie</h3>${S.map(s=>`<div class="r"><b>${s.n}</b><i></i><span class="price">${s.p}</span></div>`).join("")}
+      <h3>Dodatki</h3>${X.map(s=>`<div class="r"><b>${s.n}</b><i></i><span class="price">${s.p}</span></div>`).join("")}</div></section>
+  <section class="in"><h2 class="h2">Jak to działa</h2>
+    <div class="steps">${STEPS.map((s,i)=>`<div class="step"><span class="n">${i+1}</span><b>${s.b}</b><p>${s.p}</p></div>`).join("")}</div></section>
+  <section class="in"><h2 class="h2">Z naszego albumu</h2>
+    <div class="pola">${GAL.map((g,i)=>`<div class="pol" style="--rot:${[-2,1.5,-1,2,-1.5,1][i]}deg">${ph(g,i%2,`<span class="tag">${i%2?"Przed":"Po"}</span>`)}<p>${g.t}</p></div>`).join("")}</div></section>
+  <section class="in"><h2 class="h2" style="margin-bottom:8px">Dojeżdżamy do</h2><div class="towns">${TOWNS.map(t=>`<span>${t}</span>`).join("")}</div></section>
+  <section class="in" style="padding-top:0"><div class="ticket"><span class="disp">Bilet na czystą kanapę</span><a class="btn" href="#">WhatsApp ${TEL}</a></div></section>
+  <footer class="in">mobilnepranierzeszow.pl · tel. ${TEL}</footer>
+</div>`}
+};
+
+const picker = document.getElementById("picker"), site = document.getElementById("site"), note = document.getElementById("note");
+let cur = "A";
+try { const s = localStorage.getItem("szaty-v"); if (s && V[s]) cur = s; } catch(e){}
+Object.entries(V).forEach(([k,v])=>{
+  const b = document.createElement("button");
+  b.className="pick"; b.type="button"; b.setAttribute("role","tab"); b.id="pick-"+k; b.dataset.k=k;
+  b.innerHTML=`<span class="sw">${v.sw.map(c=>`<i style="background:${c}"></i>`).join("")}</span><b>${v.name}</b><small>${v.short}</small>`;
+  b.onclick=()=>show(k); picker.appendChild(b);
+});
+function show(k){
+  cur=k; try{localStorage.setItem("szaty-v",k)}catch(e){}
+  document.querySelectorAll(".pick").forEach(b=>b.setAttribute("aria-selected", b.dataset.k===k));
+  const n=V[k].note;
+  note.innerHTML=`<div><h3>Charakter</h3><p>${n[0]}</p></div><div><h3>Mocna strona</h3><p>${n[1]}</p></div><div><h3>Uwaga</h3><p>${n[2]}</p></div>`;
+  site.innerHTML=V[k].html();
+  site.querySelectorAll('a[href="#"]').forEach(a=>a.addEventListener("click",e=>e.preventDefault()));
+  const r=document.getElementById("ba-range"), ba=document.getElementById("ba");
+  if(r) r.addEventListener("input",()=>ba.style.setProperty("--cut",r.value+"%"));
+}
+const br=document.getElementById("browser"), wd=document.getElementById("w-desk"), wp=document.getElementById("w-phone");
+function width(phone){br.classList.toggle("phone",phone);wd.setAttribute("aria-pressed",!phone);wp.setAttribute("aria-pressed",phone)}
+wd.onclick=()=>width(false); wp.onclick=()=>width(true);
+show(cur);
+</script>
