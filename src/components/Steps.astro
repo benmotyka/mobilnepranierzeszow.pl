@@ -1,0 +1,15 @@
+---
+import { STEPS } from '../data/site';
+---
+<ol class="steps">
+  {STEPS.map((s, i) => (
+    <li><span class="k">Krok {i + 1}</span><h3>{s.title}</h3><p>{s.text}</p></li>
+  ))}
+</ol>
+<style>
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  li { border-top: 3px solid var(--aqua-lt); padding-top: 14px; display: grid; gap: 4px; align-content: start; }
+  .k { font-size: 13px; font-weight: 700; color: var(--aqua); text-transform: uppercase; letter-spacing: .08em; }
+  p { color: var(--muted); }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+</style>

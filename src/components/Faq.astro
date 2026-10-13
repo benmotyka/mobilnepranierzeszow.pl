@@ -1,0 +1,28 @@
+---
+import JsonLd from './JsonLd.astro';
+interface Props { items: { q: string; a: string }[]; schema?: boolean }
+const { items, schema = true } = Astro.props;
+const ld = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<div class="faq">
+  {items.map((f, i) => (
+    <details open={i === 0}>
+      <summary><h3>{f.q}</h3></summary>
+      <p>{f.a}</p>
+    </details>
+  ))}
+</div>
+{schema && <JsonLd data={ld} />}
+<style>
+  .faq { display: grid; gap: 8px; max-width: 820px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0 18px; }
+  summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; position: relative; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; position: absolute; right: 0; top: 12px; font-size: 24px; color: var(--primary); font-weight: 400; }
+  details[open] summary::after { content: '–'; }
+  summary h3 { font-size: 18px; font-family: var(--body); letter-spacing: 0; }
+  details p { padding-bottom: 16px; color: var(--muted); }
+</style>

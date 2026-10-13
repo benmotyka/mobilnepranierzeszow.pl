@@ -1,0 +1,15 @@
+---
+import { EXTRAS } from '../data/site';
+---
+<div class="extras">
+  {EXTRAS.map((x) => (
+    <div class="x"><p class="t"><b>{x.name}</b> <span class="price">{x.price}</span></p><p class="muted">{x.text}</p></div>
+  ))}
+</div>
+<style>
+  .extras { display: grid; gap: 10px; }
+  .x { background: var(--soft); border-radius: 12px; padding: 14px 16px; }
+  .t { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .price { color: var(--primary); font-weight: 700; }
+  .muted { font-size: 15px; }
+</style>

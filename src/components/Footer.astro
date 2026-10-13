@@ -1,0 +1,57 @@
+---
+import Icon from './Icon.astro';
+import { SITE, SERVICES, TOWNS, waLink } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap grid">
+    <div class="about">
+      <p class="name">{SITE.name}</p>
+      <p class="muted">Pranie kanap, narożników, materacy, dywanów i tapicerki samochodowej u klienta. Rzeszów i okolice.</p>
+      <p><a href={SITE.phoneHref}><Icon name="phone" size={16} /> {SITE.phone}</a></p>
+      <p><a href={waLink()} rel="noopener"><Icon name="wa" size={16} /> WhatsApp – wycena ze zdjęcia</a></p>
+      <p class="muted"><Icon name="clock" size={16} /> {SITE.hours.days} {SITE.hours.open}–{SITE.hours.close}</p>
+    </div>
+    <div>
+      <p class="h">Usługi</p>
+      <ul>{SERVICES.map((s) => <li><a href={`/${s.slug}`}>{s.h1.replace(/ w Rzeszowie.*$| Rzeszów.*$/, '')}</a></li>)}</ul>
+    </div>
+    <div>
+      <p class="h">Dojeżdżamy</p>
+      <ul>
+        <li><a href="/obszar-dojazdu">Rzeszów – wszystkie osiedla</a></li>
+        {TOWNS.map((t) => <li><a href={`/${t.slug}`}>Pranie tapicerki {t.name}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="h">Informacje</p>
+      <ul>
+        <li><a href="/cennik">Cennik</a></li>
+        <li><a href="/galeria">Galeria realizacji</a></li>
+        <li><a href="/poradnik">Poradnik</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap bottom">
+    <span>© {year} {SITE.domain}</span>
+    {SITE.company && <span>{SITE.company.name} · NIP {SITE.company.nip}</span>}
+  </div>
+</footer>
+<style>
+  .ftr { background: var(--ink); color: #d6e4ec; margin-top: 40px; padding-top: 48px; font-size: 15px; }
+  .ftr a { color: #fff; text-decoration: none; }
+  .ftr a:hover { text-decoration: underline; color: #fff; }
+  .ftr .muted { color: #9fb8c6; }
+  .grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 0.8fr; gap: 28px; }
+  .grid > div { min-width: 0; display: grid; gap: 8px; align-content: start; }
+  .name { font-family: var(--display); font-weight: 800; font-size: 20px; color: #fff; }
+  .about p { display: flex; align-items: center; gap: 6px; }
+  .about p a { display: inline-flex; align-items: center; gap: 6px; }
+  .h { font-weight: 700; color: var(--aqua-lt); text-transform: uppercase; font-size: 13px; letter-spacing: .1em; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-top: 1px solid #23465c; margin-top: 36px; padding-block: 18px; color: #9fb8c6; font-size: 14px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
+</style>

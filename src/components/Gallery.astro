@@ -1,0 +1,92 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { Photo } from '../lib/gallery';
+import Icon from './Icon.astro';
+
+interface Props { photos: Photo[]; limit?: number; showCategory?: boolean }
+const { photos, limit, showCategory = true } = Astro.props;
+const list = limit ? photos.slice(0, limit) : photos;
+const items = await Promise.all(
+  list.map(async (p) => ({ p, full: await getImage({ src: p.src, width: 1800, format: 'webp', quality: 80 }) })),
+);
+---
+<ul class="gal" data-gallery>
+  {items.map(({ p, full }, i) => (
+    <li>
+      <a href={full.src} data-lb={i} data-caption={`${p.caption}${p.kind ? ` · ${p.kind}` : ''}`} aria-label={`Powiększ: ${p.alt}`}>
+        <Image src={p.src} alt={p.alt} widths={[360, 560, 820]} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 380px" format="webp" quality={72} loading={i < 3 ? 'eager' : 'lazy'} />
+        {p.kind && <span class={`tag tag-${p.kind}`}>{p.kind === 'przed' ? 'Przed' : 'Po'}</span>}
+        {(showCategory || p.place) && <span class="cap">{p.caption}</span>}
+      </a>
+    </li>
+  ))}
+</ul>
+
+<dialog class="lb" aria-label="Podgląd zdjęcia">
+  <button class="lb-x" type="button" data-close aria-label="Zamknij"><Icon name="close" size={26} /></button>
+  <button class="lb-nav lb-prev" type="button" data-prev aria-label="Poprzednie zdjęcie"><Icon name="left" size={30} /></button>
+  <figure>
+    <img alt="" />
+    <figcaption></figcaption>
+  </figure>
+  <button class="lb-nav lb-next" type="button" data-next aria-label="Następne zdjęcie"><Icon name="right" size={30} /></button>
+</dialog>
+
+<script>
+  for (const gal of document.querySelectorAll<HTMLElement>('[data-gallery]')) {
+    const dlg = gal.nextElementSibling as HTMLDialogElement;
+    const img = dlg.querySelector('img')!;
+    const cap = dlg.querySelector('figcaption')!;
+    const links = [...gal.querySelectorAll<HTMLAnchorElement>('a[data-lb]')];
+    let i = 0;
+    const show = (n: number) => {
+      i = (n + links.length) % links.length;
+      const a = links[i];
+      img.src = a.href;
+      img.alt = a.querySelector('img')?.alt ?? '';
+      cap.textContent = `${a.dataset.caption ?? ''}  ·  ${i + 1} / ${links.length}`;
+    };
+    links.forEach((a, n) => a.addEventListener('click', (e) => {
+      if (!dlg.showModal) return;
+      e.preventDefault(); show(n); dlg.showModal();
+    }));
+    dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
+    dlg.querySelector('[data-prev]')!.addEventListener('click', () => show(i - 1));
+    dlg.querySelector('[data-next]')!.addEventListener('click', () => show(i + 1));
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(i - 1);
+      if (e.key === 'ArrowRight') show(i + 1);
+    });
+    let x0: number | null = null;
+    dlg.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    dlg.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0; x0 = null;
+      if (Math.abs(dx) > 50) show(dx < 0 ? i + 1 : i - 1);
+    });
+  }
+</script>
+
+<style>
+  .gal { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 45%), 1fr)); gap: 10px; }
+  .gal a { position: relative; display: block; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--soft); }
+  .gal :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+  .gal a:hover :global(img) { transform: scale(1.03); }
+  .tag { position: absolute; left: 10px; top: 10px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 5px; background: rgba(255,255,255,.94); color: var(--ink); }
+  .tag-po { background: var(--primary); color: #fff; }
+  .cap { position: absolute; inset: auto 0 0 0; padding: 26px 12px 9px; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.55)); }
+  @media (max-width: 480px) { .gal { gap: 6px; } .cap { font-size: 12px; padding: 18px 8px 6px; } }
+
+  .lb { border: 0; padding: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; background: rgba(6, 20, 30, .94); color: #fff; }
+  .lb[open] { display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+  .lb::backdrop { background: rgba(6, 20, 30, .6); }
+  .lb figure { margin: 0; display: grid; gap: 10px; justify-items: center; min-width: 0; padding: 50px 0 20px; height: 100%; align-content: center; }
+  .lb img { max-height: calc(100dvh - 120px); width: auto; max-width: 100%; object-fit: contain; border-radius: 6px; }
+  .lb figcaption { font-size: 15px; color: #cfe0ea; text-align: center; padding-inline: 12px; }
+  .lb button { all: unset; cursor: pointer; color: #fff; display: grid; place-items: center; }
+  .lb button:focus-visible { outline: 3px solid var(--aqua-lt); border-radius: 8px; }
+  .lb-nav { width: 56px; height: 56px; }
+  .lb-x { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; }
+  @media (max-width: 600px) { .lb-nav { position: absolute; bottom: 14px; width: 48px; height: 48px; } .lb-prev { left: 14px; } .lb-next { right: 14px; } .lb[open] { grid-template-columns: 1fr; } }
+</style>

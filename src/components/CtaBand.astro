@@ -1,0 +1,24 @@
+---
+import Icon from './Icon.astro';
+import { SITE, waLink } from '../data/site';
+interface Props { title?: string; text?: string; waText?: string }
+const { title = 'Wyślij zdjęcie mebla, odpiszemy z ceną', text = `WhatsApp lub telefon: ${SITE.phone}. ${SITE.hours.days} ${SITE.hours.open}–${SITE.hours.close}.`, waText } = Astro.props;
+---
+<section class="wrap section">
+  <div class="cta">
+    <div><h2>{title}</h2><p>{text}</p></div>
+    <div class="btn-row">
+      <a class="btn btn-white" href={waLink(waText)} rel="noopener"><Icon name="wa" size={20} />Napisz na WhatsApp</a>
+      <a class="btn btn-line" href={SITE.phoneHref}><Icon name="phone" size={18} />{SITE.phone}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta { background: var(--primary); color: #fff; border-radius: 22px; padding: clamp(24px, 4vw, 40px); display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; }
+  .cta > div:first-child { display: grid; gap: 6px; max-width: 46ch; }
+  .cta p { color: #cfe0f5; }
+  .btn-white { background: #fff; color: var(--primary); }
+  .btn-white:hover { background: var(--soft); color: var(--primary-dk); }
+  .btn-line { border-color: rgba(255,255,255,.5); color: #fff; }
+  .btn-line:hover { border-color: #fff; color: #fff; }
+</style>

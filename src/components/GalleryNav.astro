@@ -1,0 +1,19 @@
+---
+import { CATEGORIES, PHOTOS, photosIn } from '../lib/gallery';
+interface Props { current: string }
+const { current } = Astro.props;
+const items = [{ slug: '', label: 'Wszystko', n: PHOTOS.length }, ...CATEGORIES.map((c) => ({ slug: c.slug, label: c.label, n: photosIn(c.slug).length }))];
+---
+<nav class="gnav" aria-label="Kategorie galerii">
+  {items.map((c) => (
+    <a href={c.slug ? `/galeria/${c.slug}` : '/galeria'} aria-current={c.slug === current ? 'page' : undefined}>{c.label}{c.n > 0 && <span>{c.n}</span>}</a>
+  ))}
+</nav>
+<style>
+  .gnav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  a { padding: 7px 13px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 15px; font-weight: 600; text-decoration: none; color: var(--ink); display: inline-flex; gap: 6px; }
+  a:hover { border-color: var(--primary); color: var(--ink); }
+  a[aria-current] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  span { color: var(--muted); font-weight: 500; }
+  a[aria-current] span { color: #b9cfdc; }
+</style>
