@@ -2,7 +2,6 @@
 // Para zdjęć przed/po z galerii. Dopóki nie ma zdjęć: makieta rozmowy z wyceną na WhatsApp.
 import { Image } from 'astro:assets';
 import { firstPair } from '../lib/gallery';
-import { markSvg } from '../lib/znak.mjs';
 interface Props { category?: string; example?: { nom: string; gen: string; price: string } }
 const { category, example = { nom: 'Taki narożnik', gen: 'takiego narożnika', price: '199 zł' } } = Astro.props;
 const pair = firstPair(category) ?? firstPair();
@@ -14,7 +13,7 @@ const pair = firstPair(category) ?? firstPair();
   </div>
 ) : (
   <div class="chat" aria-label="Przykład wyceny na WhatsApp">
-    <p class="chat-head"><span class="av" set:html={markSvg({ id: 'logo-chat', pad: 0.14 })} /><span><b>Mobilne Pranie Rzeszów</b><small>zwykle odpowiada w 15 minut</small></span></p>
+    <p class="chat-head"><span class="av"><img src="/favicon.svg" alt="" width="26" height="26" /></span><span><b>Mobilne Pranie Rzeszów</b><small>zwykle odpowiada w 15 minut</small></span></p>
     <div class="msg me">
       <span class="photo" aria-hidden="true"></span>
       Dzień dobry, ile za pranie {example.gen}? Mieszkam na Słocinie.
@@ -35,7 +34,8 @@ const pair = firstPair(category) ?? firstPair();
   .chat-head { display: flex; align-items: center; gap: 10px; background: var(--surface); border-radius: 14px; padding: 10px 12px; }
   .chat-head small { display: block; color: var(--muted); font-size: 12px; }
   .av { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: inset 0 0 0 1px var(--line); }
-  .av :global(svg) { display: block; width: 100%; height: 100%; }
+  .av { display: grid; place-items: center; background: #fff; }
+  .av img { width: 26px; height: 26px; }
   .msg { max-width: 84%; padding: 9px 12px 18px; border-radius: 14px; position: relative; background: var(--surface); }
   .msg time { position: absolute; right: 10px; bottom: 4px; font-size: 11px; color: var(--muted); }
   .me { justify-self: end; background: #d6f5c8; border-bottom-right-radius: 4px; }

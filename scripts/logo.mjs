@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { markSvg, COLORS } from '../src/lib/znak.mjs';
+import { markSvg, COLORS, PATHS } from '../src/lib/znak.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const PUB = path.join(ROOT, 'public');
@@ -37,8 +37,8 @@ function lockup({ layout = 'poziome', s = 200, ink = navy, id = 'l' } = {}) {
   const w = (s * 0.42).toFixed(1), c = (s * 0.13).toFixed(1);
   const words = `<div class="w" style="font-size:${w}px;color:${ink}">mobilne<br>pranie</div><div class="c" style="font-size:${c}px;margin-top:${s * 0.07}px">RZESZÓW</div>`;
   if (layout === 'pionowe')
-    return `<div class="lk" style="flex-direction:column;gap:${s * 0.16}px;text-align:center">${markSvg({ id, size: s })}<div class="wm" style="justify-items:center">${words}</div></div>`;
-  return `<div class="lk" style="gap:${s * 0.16}px">${markSvg({ id, size: s })}<div class="wm">${words}</div></div>`;
+    return `<div class="lk" style="flex-direction:column;gap:${s * 0.16}px;text-align:center">${markSvg({ size: s })}<div class="wm" style="justify-items:center">${words}</div></div>`;
+  return `<div class="lk" style="gap:${s * 0.16}px">${markSvg({ size: s })}<div class="wm">${words}</div></div>`;
 }
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'logo-'));
@@ -58,7 +58,7 @@ function shot(body, w, h, out, { scale = 1, trim = false } = {}) {
 const svgPng = (svg, size, out) => sharp(Buffer.from(svg), { density: 300 }).resize(size, size).png().toFile(out);
 
 // --- Strona ---
-fs.writeFileSync(path.join(PUB, 'favicon.svg'), markSvg({ id: 'f' }) + '\n');
+fs.writeFileSync(path.join(PUB, 'favicon.svg'), markSvg() + '\n');
 // iPhone sam zaokrągla rogi ikony, więc rogi wypełniamy kolorem znaku.
 await sharp(Buffer.from(markSvg()), { density: 300 }).resize(180, 180).flatten({ background: blue }).png().toFile(path.join(PUB, 'apple-touch-icon.png'));
 await svgPng(markSvg(), 512, path.join(PUB, 'logo.png'));
@@ -92,9 +92,7 @@ await shot(`<div style="padding:40px">${lockup({ layout: 'pionowe', s: 220, ink:
 const coverBg = (w, h) => `
   <div style="position:absolute;inset:0;background:linear-gradient(115deg, ${navy} 0%, #11386e 55%, ${blue} 100%)"></div>
   <svg viewBox="0 0 100 100" style="position:absolute;right:${-h * 0.15}px;top:${-h * 0.2}px;height:${h * 1.45}px;opacity:.16">
-    <path d="M50 11 C53 16 56 21 58.5 25.5 L66 40 L62 60 C56 75 50 85 43 89 C34 82 22 70 17 59 C26 42 38 25 50 11Z" fill="${teal}"/>
-    <path d="M56 46 L72 52.5 C83 59 86 73 76 82 C69 87 59 89 50 90 C51 76 52 59 56 46Z" fill="#fff"/>
-    <path d="M74.5 24.5 L110 -11" stroke="#fff" stroke-width="6"/></svg>`;
+    <path fill-rule="evenodd" d="${PATHS.teal}" fill="${teal}"/><path fill-rule="evenodd" d="${PATHS.white}" fill="#fff"/></svg>`;
 const pill = (t, size) => `<span style="display:inline-block;background:${teal};color:${navy};font-weight:800;font-size:${size}px;padding:.45em 1em;border-radius:999px">${t}</span>`;
 
 // Facebook: 1640x624. Telefon przycina boki, więc treść trzymamy w środkowych ~1100 px.
