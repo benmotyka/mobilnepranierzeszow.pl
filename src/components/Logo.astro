@@ -1,0 +1,19 @@
+---
+// Logo: znak + „mobilne pranie / RZESZÓW”. Źródło znaku: src/lib/znak.mjs.
+import { markSvg } from '../lib/znak.mjs';
+interface Props { id: string; size?: number; light?: boolean }
+const { id, size = 40, light = false } = Astro.props;
+---
+<span class:list={['lg', { light }]} style={`--s:${size}px`}>
+  <Fragment set:html={markSvg({ id, size })} />
+  <span class="wm"><span class="w">mobilne pranie</span><span class="c">RZESZÓW</span></span>
+</span>
+<style>
+  .lg { display: inline-flex; align-items: center; gap: calc(var(--s) * .28); color: var(--ink); }
+  .lg :global(svg) { width: var(--s); height: var(--s); flex: none; }
+  .wm { display: grid; line-height: 1; }
+  .w { font-family: var(--display); font-weight: 800; font-size: calc(var(--s) * .5); letter-spacing: -0.02em; }
+  .c { font-weight: 800; font-size: calc(var(--s) * .26); letter-spacing: .3em; color: var(--aqua); margin-top: calc(var(--s) * .1); }
+  .light { color: #fff; }
+  .light .c { color: var(--aqua-lt); }
+</style>

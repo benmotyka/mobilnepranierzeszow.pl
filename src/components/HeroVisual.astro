@@ -2,6 +2,7 @@
 // Para zdjęć przed/po z galerii. Dopóki nie ma zdjęć: makieta rozmowy z wyceną na WhatsApp.
 import { Image } from 'astro:assets';
 import { firstPair } from '../lib/gallery';
+import { markSvg } from '../lib/znak.mjs';
 interface Props { category?: string; example?: { nom: string; gen: string; price: string } }
 const { category, example = { nom: 'Taki narożnik', gen: 'takiego narożnika', price: '199 zł' } } = Astro.props;
 const pair = firstPair(category) ?? firstPair();
@@ -13,7 +14,7 @@ const pair = firstPair(category) ?? firstPair();
   </div>
 ) : (
   <div class="chat" aria-label="Przykład wyceny na WhatsApp">
-    <p class="chat-head"><span class="av">MP</span><span><b>Mobilne Pranie Rzeszów</b><small>zwykle odpowiada w 15 minut</small></span></p>
+    <p class="chat-head"><span class="av" set:html={markSvg({ id: 'logo-chat', rx: 0, bleed: true })} /><span><b>Mobilne Pranie Rzeszów</b><small>zwykle odpowiada w 15 minut</small></span></p>
     <div class="msg me">
       <span class="photo" aria-hidden="true"></span>
       Dzień dobry, ile za pranie {example.gen}? Mieszkam na Słocinie.
@@ -33,7 +34,8 @@ const pair = firstPair(category) ?? firstPair();
   .chat { background: #e9efe6; border-radius: 22px; padding: 14px; box-shadow: 0 20px 50px rgba(13,43,62,.14); display: grid; gap: 10px; max-width: 440px; justify-self: center; width: 100%; font-size: 15px; line-height: 1.4; }
   .chat-head { display: flex; align-items: center; gap: 10px; background: var(--surface); border-radius: 14px; padding: 10px 12px; }
   .chat-head small { display: block; color: var(--muted); font-size: 12px; }
-  .av { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; }
+  .av { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex: none; }
+  .av :global(svg) { display: block; width: 100%; height: 100%; }
   .msg { max-width: 84%; padding: 9px 12px 18px; border-radius: 14px; position: relative; background: var(--surface); }
   .msg time { position: absolute; right: 10px; bottom: 4px; font-size: 11px; color: var(--muted); }
   .me { justify-self: end; background: #d6f5c8; border-bottom-right-radius: 4px; }

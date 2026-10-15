@@ -1,12 +1,13 @@
 ---
 import Icon from './Icon.astro';
+import Logo from './Logo.astro';
 import { SITE, SERVICES, TOWNS, waLink } from '../data/site';
 const year = new Date().getFullYear();
 ---
 <footer class="ftr">
   <div class="wrap grid">
     <div class="about">
-      <p class="name">{SITE.name}</p>
+      <a class="name" href="/" aria-label={`${SITE.name} – strona główna`}><Logo id="logo-ftr" size={48} light /></a>
       <p class="muted">Pranie kanap, narożników, materacy, dywanów i tapicerki samochodowej u klienta. Rzeszów i okolice.</p>
       <p><a href={SITE.phoneHref}><Icon name="phone" size={16} /> {SITE.phone}</a></p>
       <p><a href={waLink()} rel="noopener"><Icon name="wa" size={16} /> WhatsApp – wycena ze zdjęcia</a></p>
@@ -46,7 +47,8 @@ const year = new Date().getFullYear();
   .ftr .muted { color: #9fb8c6; }
   .grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 0.8fr; gap: 28px; }
   .grid > div { min-width: 0; display: grid; gap: 8px; align-content: start; }
-  .name { font-family: var(--display); font-weight: 800; font-size: 20px; color: #fff; }
+  .ftr .name { margin-bottom: 6px; }
+  .ftr .name:hover { text-decoration: none; }
   .about p { display: flex; align-items: center; gap: 6px; }
   .about p a { display: inline-flex; align-items: center; gap: 6px; }
   .h { font-weight: 700; color: var(--aqua-lt); text-transform: uppercase; font-size: 13px; letter-spacing: .1em; }

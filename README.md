@@ -43,7 +43,7 @@ Dopóki galeria jest pusta, podstrony galerii mają `noindex`, a w miejscu zdję
 
 - Osobne podstrony pod frazy: 6 usług (`/pranie-naroznikow-rzeszow` itd.) i 7 miejscowości (`/pranie-tapicerki-tyczyn` itd.).
 - Dane strukturalne: `LocalBusiness`, `Service`, `FAQPage`, `BreadcrumbList`, `Article`.
-- Mapa strony (`/sitemap-index.xml`), `robots.txt`, adresy kanoniczne, Open Graph (`public/og.png`, generuje `npm run og`).
+- Mapa strony (`/sitemap-index.xml`), `robots.txt`, adresy kanoniczne, Open Graph i logo (`public/og.png`, `favicon.svg`, `logo.png`, `apple-touch-icon.png`; generuje `npm run logo`, źródło znaku: `src/lib/znak.mjs`).
 - Statyczny HTML, prawie zero JavaScriptu, fonty z własnego serwera, zdjęcia WebP w kilku rozmiarach.
 
 ## SEO: do zrobienia poza stroną (najważniejsze)
