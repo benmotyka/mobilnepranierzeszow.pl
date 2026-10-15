@@ -59,7 +59,8 @@ const svgPng = (svg, size, out) => sharp(Buffer.from(svg), { density: 300 }).res
 
 // --- Strona ---
 fs.writeFileSync(path.join(PUB, 'favicon.svg'), markSvg({ id: 'f' }) + '\n');
-await svgPng(markSvg({ rx: 0, bleed: true }), 180, path.join(PUB, 'apple-touch-icon.png'));
+// iPhone sam zaokrągla rogi ikony, więc rogi wypełniamy kolorem znaku.
+await sharp(Buffer.from(markSvg()), { density: 300 }).resize(180, 180).flatten({ background: blue }).png().toFile(path.join(PUB, 'apple-touch-icon.png'));
 await svgPng(markSvg(), 512, path.join(PUB, 'logo.png'));
 await shot(`
   <div style="width:1200px;height:630px;background:${bg};position:relative;padding:64px 80px">
@@ -79,7 +80,8 @@ const G = (f) => path.join(KIT, 'grafiki', f);
 fs.mkdirSync(path.join(KIT, 'logo'), { recursive: true });
 fs.writeFileSync(L('znak.svg'), markSvg() + '\n');
 await svgPng(markSvg(), 1024, L('znak-1024.png'));
-await svgPng(markSvg({ rx: 0, bleed: true }), 1080, G('avatar.png'));
+// Awatar: cały znak na białym tle, mieści się w kole, do którego przycinają FB, IG i WhatsApp.
+await svgPng(markSvg({ pad: 0.17 }), 1080, G('avatar.png'));
 const W = 1400, H = 700;
 await shot(`<div style="padding:40px">${lockup({ s: 220 })}</div>`, W, H, L('logo-poziome.png'), { scale: 2, trim: true });
 await shot(`<div style="padding:40px">${lockup({ s: 220, ink: '#fff' })}</div>`, W, H, L('logo-poziome-biale.png'), { scale: 2, trim: true });

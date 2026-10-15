@@ -2,11 +2,11 @@
   <clipPath id="f"><rect width="100" height="100" rx="17"/></clipPath>
   <rect width="100" height="100" rx="17" fill="#1550a8"/>
   <g clip-path="url(#f)" stroke="#1550a8" stroke-linejoin="round" paint-order="stroke">
-    <path d="M50 11 C53 16 56 21 58.5 25.5 L66 40 L62 60 C56 75 50 85 43 89 C34 82 22 70 17 59 C26 42 38 25 50 11Z" fill="#27b8c0" stroke="none"/>
+    <path d="M50 11 C58 22 64 30 66 40 L62 60 C56 75 50 85 43 89 C34 82 22 70 17 59 C26 42 38 25 50 11Z" fill="#27b8c0" stroke="none"/>
     <path d="M12 62 C24 48 36 38 50 33" fill="none" stroke-width="3.5"/>
     <path d="M56 46 L72 52.5 C83 59 86 73 76 82 C69 87 59 89 50 90 C51 76 52 59 56 46Z" fill="#fff" stroke-width="5"/>
     <path d="M74.5 24.5 L101 -2" stroke="#fff" stroke-width="6" fill="none"/>
-    <path d="M57.59 32.93 L72.3 22.3 L76.7 26.7 L66.07 41.41Z" fill="#27b8c0" stroke-width="3"/>
+    <path d="M56.17 31.51 L72.3 22.3 L76.7 26.7 L67.49 42.83Z" fill="#27b8c0" stroke-width="3"/>
     <path d="M52.64 27.98 L71.02 46.36 L65.36 52.02 L46.98 33.64Z" fill="#fff" stroke-width="4"/>
   </g>
 </svg>
