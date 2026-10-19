@@ -2,6 +2,7 @@
 // 1. Wrzuć zdjęcia do zdjecia-do-dodania/<kategoria>/<realizacja>/, np.
 //    zdjecia-do-dodania/narozniki/Słocina/IMG_1234.jpg
 //    Zdjęcia „przed” mają w nazwie słowo „przed” (IMG_1234-przed.jpg) albo leżą w podfolderze „przed”.
+//    Gotowy kolaż z oboma ujęciami: „przed-po” w nazwie (IMG_1234-przed-po.jpg) albo podfolder „przed-po”.
 // 2. npm run zdjecia
 // Skrypt zmniejsza zdjęcia do 2000 px, obraca je wg EXIF, usuwa metadane (GPS!)
 // i zapisuje do src/assets/galeria/<kategoria>/. Oryginały przenosi do zdjecia-do-dodania/_przetworzone/.
@@ -31,6 +32,16 @@ function walk(dir) {
   });
 }
 
+// Data zrobienia zdjęcia (macOS: metadane Spotlight), a gdy jej nie ma: data modyfikacji pliku.
+function shotDate(file) {
+  try {
+    const out = execFileSync('mdls', ['-raw', '-name', 'kMDItemContentCreationDate', file], { encoding: 'utf8' });
+    const d = new Date(out.trim().replace(' +0000', 'Z').replace(' ', 'T'));
+    if (!Number.isNaN(d.getTime())) return d;
+  } catch {}
+  return fs.statSync(file).mtime;
+}
+
 const opisy = fs.existsSync(OPISY) ? JSON.parse(fs.readFileSync(OPISY, 'utf8')) : {};
 let added = 0, skipped = 0;
 
@@ -41,9 +52,10 @@ for (const cat of fs.existsSync(IN) ? fs.readdirSync(IN) : []) {
 
   for (const file of walk(catDir)) {
     const rel = path.relative(catDir, file).split(path.sep);
-    const jobName = rel.length > 1 && rel[0].toLowerCase() !== 'przed' && rel[0].toLowerCase() !== 'po' ? rel[0] : '';
+    const jobName = rel.length > 1 && !['przed', 'po', 'przed-po'].includes(rel[0].toLowerCase()) ? rel[0] : '';
     const lowerPath = rel.join('/').toLowerCase();
-    const kind = /(^|[^a-z])przed([^a-z]|$)|before/.test(lowerPath) ? 'przed'
+    const kind = /przed[-_ ]?(i[-_ ])?po([^a-z]|$)/.test(lowerPath) ? 'przed-po'
+      : /(^|[^a-z])przed([^a-z]|$)|before/.test(lowerPath) ? 'przed'
       : /(^|[^a-z])po([^a-z]|$)|after/.test(lowerPath) ? 'po' : null;
 
     let src = file;
@@ -55,7 +67,7 @@ for (const cat of fs.existsSync(IN) ? fs.readdirSync(IN) : []) {
 
     const buf = fs.readFileSync(src);
     const hash = crypto.createHash('sha1').update(buf).digest('hex').slice(0, 6);
-    const m = fs.statSync(file).mtime;
+    const m = shotDate(file);
     const date = `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, '0')}-${String(m.getDate()).padStart(2, '0')}`;
     const jobSlug = slug(jobName || 'realizacja');
     const job = `${date}-${jobSlug}`;

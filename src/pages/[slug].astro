@@ -11,7 +11,7 @@ import Gallery from '../components/Gallery.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { SITE, SERVICES, TOWNS, FAQ_GENERAL, waLink, type Service, type Town } from '../data/site';
-import { photosIn, PHOTOS } from '../lib/gallery';
+import { photosIn, PHOTOS, mixedPhotos } from '../lib/gallery';
 
 export function getStaticPaths() {
   return [
@@ -166,7 +166,7 @@ const EXAMPLES: Record<string, { nom: string; gen: string; price: string }> = {
       {PHOTOS.length > 0 && (
         <section class="wrap section">
           <div class="section-head"><p class="eyebrow">Galeria</p><h2>Efekty naszych prań</h2></div>
-          <Gallery photos={PHOTOS} limit={6} />
+          <Gallery photos={mixedPhotos(6)} />
         </section>
       )}
 
@@ -210,7 +210,7 @@ const EXAMPLES: Record<string, { nom: string; gen: string; price: string }> = {
   .towns-line { margin-top: 18px; }
   .villages { padding: 20px; display: grid; gap: 10px; }
   @media (max-width: 900px) {
-    .hero, .cols { grid-template-columns: 1fr; }
+    .hero, .cols { grid-template-columns: minmax(0, 1fr); }
     .points { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) { .links { grid-template-columns: 1fr; } }

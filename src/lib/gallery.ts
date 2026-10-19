@@ -18,7 +18,7 @@ export type Photo = {
   categoryLabel: string;
   job: string; // identyfikator realizacji (łączy zdjęcia przed i po)
   place: string | null; // np. „Słocina” z opisy.json
-  kind: 'przed' | 'po' | null;
+  kind: 'przed' | 'po' | 'przed-po' | null; // przed-po = gotowy kolaż z oboma ujęciami
   date: string | null;
   alt: string;
   caption: string;
@@ -30,8 +30,8 @@ const files = import.meta.glob<{ default: ImageMetadata }>(
 );
 const places = opisy as Record<string, string>;
 
-// Nazwa z `npm run zdjecia`: 2026-11-03-slocina-a1b2c3-przed.jpg
-const NAME = /^(\d{4}-\d{2}-\d{2})-(.+)-([0-9a-f]{6})(?:-(przed|po))?$/;
+// Nazwa z `npm run zdjecia`: 2026-11-03-slocina-a1b2c3-przed.jpg (albo -po, -przed-po)
+const NAME = /^(\d{4}-\d{2}-\d{2})-(.+)-([0-9a-f]{6})(?:-(przed-po|przed|po))?$/;
 
 function parse(path: string, src: ImageMetadata): Photo | null {
   const [, , , , category, file] = path.split('/');
@@ -39,11 +39,11 @@ function parse(path: string, src: ImageMetadata): Photo | null {
   if (!cat) return null;
   const base = file.replace(/\.[^.]+$/, '');
   const m = base.match(NAME);
-  const job = m ? `${m[1]}-${m[2]}` : base.replace(/-(przed|po)$/, '');
-  const kind = (m?.[4] ?? base.match(/-(przed|po)$/)?.[1] ?? null) as Photo['kind'];
+  const job = m ? `${m[1]}-${m[2]}` : base.replace(/-(przed-po|przed|po)$/, '');
+  const kind = (m?.[4] ?? base.match(/-(przed-po|przed|po)$/)?.[1] ?? null) as Photo['kind'];
   const place = places[job] ?? null;
   const where = place ? ` – ${place}` : '';
-  const when = kind === 'przed' ? ', przed praniem' : kind === 'po' ? ', po praniu' : '';
+  const when = kind === 'przed' ? ', przed praniem' : kind === 'po' ? ', po praniu' : kind === 'przed-po' ? ' przed i po praniu' : '';
   return {
     src, category: cat.slug, categoryLabel: cat.label, job, place, kind, date: m?.[1] ?? null,
     alt: `${cat.one}${where}${when}. Mobilne pranie tapicerki Rzeszów`,
@@ -68,4 +68,30 @@ export function firstPair(category?: string): { before: Photo; after: Photo } | 
     if (after) return { before: p, after };
   }
   return null;
+}
+
+// Kolejność kategorii, gdy pokazujemy przekrój (strona główna, hero bez kategorii).
+const FEATURED: CategorySlug[] = ['narozniki', 'kanapy', 'fotele-i-krzesla', 'materace', 'dywany', 'auta'];
+
+/** Pierwszy kolaż przed/po: z kategorii albo z pierwszej niepustej z FEATURED. */
+export function firstCollage(category?: string): Photo | null {
+  const cats = category ? [category] : FEATURED;
+  for (const c of cats) {
+    const p = photosIn(c).find((q) => q.kind === 'przed-po');
+    if (p) return p;
+  }
+  return null;
+}
+
+/** Przekrój galerii: po kolei z każdej kategorii, żeby jedna kategoria nie zajęła całej sekcji. */
+export function mixedPhotos(limit: number): Photo[] {
+  const queues = FEATURED.map((c) => photosIn(c));
+  const out: Photo[] = [];
+  while (out.length < limit && queues.some((q) => q.length)) {
+    for (const q of queues) {
+      const p = q.shift();
+      if (p && out.length < limit) out.push(p);
+    }
+  }
+  return out;
 }

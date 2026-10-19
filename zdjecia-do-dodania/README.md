@@ -16,6 +16,8 @@ zdjecia-do-dodania/
         IMG_2002.jpg
 ```
 
+Gotowy kolaż z napisami „Przed/Po” (jedno zdjęcie z oboma ujęciami): dopisz `-przed-po` do nazwy pliku, np. `IMG_3001-przed-po.jpg`.
+
 Kategorie: `narozniki`, `kanapy`, `fotele-i-krzesla`, `materace`, `dywany`, `auta`.
 
 Potem w terminalu: `npm run zdjecia`. Zawartość tego folderu nie trafia do repozytorium (zdjęcia z telefonu mają GPS w metadanych).

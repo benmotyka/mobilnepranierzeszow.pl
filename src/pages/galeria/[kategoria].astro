@@ -22,7 +22,7 @@ const service = SERVICES.find((s) => s.slug === cat.service)!;
       <p class="lead">Ceny i szczegóły: <a href={`/${service.slug}`}>{service.h1}</a>.</p>
     </div>
     <GalleryNav current={cat.slug} />
-    {photos.length > 0 ? <Gallery photos={photos} showCategory={false} /> : (
+    {photos.length > 0 ? <Gallery photos={photos} showCategory={false} schema /> : (
       <div class="card empty"><h2>Zdjęcia z tej kategorii już wkrótce</h2></div>
     )}
   </section>

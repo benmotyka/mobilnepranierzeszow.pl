@@ -9,7 +9,7 @@ import Gallery from '../components/Gallery.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { SITE, SERVICES, TOWNS, RZESZOW_DISTRICTS, FAQ_GENERAL, waLink } from '../data/site';
-import { PHOTOS } from '../lib/gallery';
+import { PHOTOS, mixedPhotos } from '../lib/gallery';
 
 const featured = SERVICES.map((s) => ({ name: s.short, price: s.prices[0].price, note: s.prices[0].name, href: `/${s.slug}` }));
 const website = {
@@ -93,7 +93,7 @@ const website = {
   {PHOTOS.length > 0 && (
     <section class="wrap section">
       <div class="section-head"><p class="eyebrow">Galeria</p><h2>Nasze prania z Rzeszowa i okolic</h2></div>
-      <Gallery photos={PHOTOS} limit={9} />
+      <Gallery photos={mixedPhotos(9)} />
       <p class="more"><a href="/galeria">Zobacz wszystkie realizacje ({PHOTOS.length}) →</a></p>
     </section>
   )}
@@ -180,7 +180,7 @@ const website = {
   .towns a:hover { color: var(--primary); }
 
   @media (max-width: 900px) {
-    .hero, .cols, .why, .area { grid-template-columns: 1fr; }
+    .hero, .cols, .why, .area { grid-template-columns: minmax(0, 1fr); }
     .svc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 560px) {

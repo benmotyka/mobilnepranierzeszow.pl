@@ -14,7 +14,7 @@ import { PHOTOS } from '../../lib/gallery';
       <p class="lead">Prawdziwe zdjęcia z naszych prań w Rzeszowie i okolicach. Kliknij zdjęcie, żeby je powiększyć.</p>
     </div>
     <GalleryNav current="" />
-    {PHOTOS.length > 0 ? <Gallery photos={PHOTOS} /> : (
+    {PHOTOS.length > 0 ? <Gallery photos={PHOTOS} schema /> : (
       <div class="card empty"><h2>Pierwsze zdjęcia już wkrótce</h2><p class="muted">Dodajemy zdjęcia z każdego prania, za zgodą klientów.</p></div>
     )}
   </section>

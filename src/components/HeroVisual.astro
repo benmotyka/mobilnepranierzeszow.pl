@@ -1,16 +1,23 @@
 ---
 // Para zdjęć przed/po z galerii. Dopóki nie ma zdjęć: makieta rozmowy z wyceną na WhatsApp.
 import { Image } from 'astro:assets';
-import { firstPair } from '../lib/gallery';
+import { firstPair, firstCollage } from '../lib/gallery';
 interface Props { category?: string; example?: { nom: string; gen: string; price: string } }
 const { category, example = { nom: 'Taki narożnik', gen: 'takiego narożnika', price: '199 zł' } } = Astro.props;
 const pair = firstPair(category) ?? firstPair();
+// Bez osobnych zdjęć przed/po: gotowy kolaż z tej kategorii, a jak go nie ma, z kanap lub narożników.
+const collage = pair ? null : (firstCollage(category) ?? firstCollage());
 ---
 {pair ? (
   <div class="pair">
     <figure><Image src={pair.before.src} alt={pair.before.alt} widths={[320, 520]} sizes="(max-width: 800px) 45vw, 260px" format="webp" loading="eager" /><span class="tag">Przed</span></figure>
     <figure><Image src={pair.after.src} alt={pair.after.alt} widths={[320, 520]} sizes="(max-width: 800px) 45vw, 260px" format="webp" loading="eager" /><span class="tag tag-po">Po</span></figure>
   </div>
+) : collage ? (
+  <figure class="collage">
+    <Image src={collage.src} alt={collage.alt} widths={[400, 640, 960]} sizes="(max-width: 800px) 92vw, 520px" format="webp" quality={76} loading="eager" fetchpriority="high" />
+    <figcaption>{collage.caption} · przed i po praniu</figcaption>
+  </figure>
 ) : (
   <div class="chat" aria-label="Przykład wyceny na WhatsApp">
     <p class="chat-head"><span class="av"><img src="/favicon.svg" alt="" width="26" height="26" /></span><span><b>Mobilne Pranie Rzeszów</b><small>zwykle odpowiada w 15 minut</small></span></p>
@@ -28,6 +35,9 @@ const pair = firstPair(category) ?? firstPair();
   .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--surface); padding: 8px; border-radius: 18px; box-shadow: 0 20px 50px rgba(13,43,62,.12); }
   .pair figure { margin: 0; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 3 / 4; }
   .pair :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .collage { margin: 0; background: var(--surface); padding: 8px; border-radius: 18px; box-shadow: 0 20px 50px rgba(13,43,62,.12); max-width: 520px; justify-self: center; width: 100%; min-width: 0; }
+  .collage :global(img) { width: 100%; height: auto; border-radius: 12px; }
+  .collage figcaption { font-size: 14px; color: var(--muted); padding: 8px 6px 2px; }
   .tag { position: absolute; left: 10px; top: 10px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 5px; background: rgba(255,255,255,.94); color: var(--ink); }
   .tag-po { background: var(--primary); color: #fff; }
   .chat { background: #e9efe6; border-radius: 22px; padding: 14px; box-shadow: 0 20px 50px rgba(13,43,62,.14); display: grid; gap: 10px; max-width: 440px; justify-self: center; width: 100%; font-size: 15px; line-height: 1.4; }

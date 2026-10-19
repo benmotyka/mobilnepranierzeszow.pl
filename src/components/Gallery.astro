@@ -2,20 +2,31 @@
 import { Image, getImage } from 'astro:assets';
 import type { Photo } from '../lib/gallery';
 import Icon from './Icon.astro';
+import JsonLd from './JsonLd.astro';
+import { SITE } from '../data/site';
 
-interface Props { photos: Photo[]; limit?: number; showCategory?: boolean }
-const { photos, limit, showCategory = true } = Astro.props;
+// schema: dane ImageGallery dla Google (tylko na stronach galerii, żeby nie dublować zdjęć).
+interface Props { photos: Photo[]; limit?: number; showCategory?: boolean; schema?: boolean }
+const { photos, limit, showCategory = true, schema = false } = Astro.props;
 const list = limit ? photos.slice(0, limit) : photos;
 const items = await Promise.all(
   list.map(async (p) => ({ p, full: await getImage({ src: p.src, width: 1800, format: 'webp', quality: 80 }) })),
 );
+const ld = schema && {
+  '@context': 'https://schema.org', '@type': 'ImageGallery', url: new URL(Astro.url.pathname, SITE.url).href,
+  associatedMedia: items.map(({ p, full }) => ({
+    '@type': 'ImageObject', contentUrl: new URL(full.src, SITE.url).href, name: p.caption, description: p.alt,
+    creditText: SITE.name, copyrightNotice: SITE.name, creator: { '@id': `${SITE.url}/#firma` },
+  })),
+};
 ---
+{ld && <JsonLd data={ld} />}
 <ul class="gal" data-gallery>
   {items.map(({ p, full }, i) => (
     <li>
-      <a href={full.src} data-lb={i} data-caption={`${p.caption}${p.kind ? ` · ${p.kind}` : ''}`} aria-label={`Powiększ: ${p.alt}`}>
-        <Image src={p.src} alt={p.alt} widths={[360, 560, 820]} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 380px" format="webp" quality={72} loading={i < 3 ? 'eager' : 'lazy'} />
-        {p.kind && <span class={`tag tag-${p.kind}`}>{p.kind === 'przed' ? 'Przed' : 'Po'}</span>}
+      <a href={full.src} data-lb={i} data-caption={`${p.caption}${p.kind ? ` · ${p.kind === 'przed-po' ? 'przed i po' : p.kind}` : ''}`} aria-label={`Powiększ: ${p.alt}`}>
+        <Image class:list={[{ collage: p.kind === 'przed-po' }]} src={p.src} alt={p.alt} widths={[360, 560, 820]} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 380px" format="webp" quality={72} loading={i < 3 ? 'eager' : 'lazy'} />
+        {(p.kind === 'przed' || p.kind === 'po') && <span class={`tag tag-${p.kind}`}>{p.kind === 'przed' ? 'Przed' : 'Po'}</span>}
         {(showCategory || p.place) && <span class="cap">{p.caption}</span>}
       </a>
     </li>
@@ -70,8 +81,10 @@ const items = await Promise.all(
 
 <style>
   .gal { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 45%), 1fr)); gap: 10px; }
-  .gal a { position: relative; display: block; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--soft); }
+  .gal a { position: relative; display: block; border-radius: 12px; overflow: hidden; aspect-ratio: 1; background: var(--soft); }
   .gal :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+  /* kolaże mają napis „Przed:” u góry, więc przycinamy od dołu */
+  .gal :global(img.collage) { object-position: top; }
   .gal a:hover :global(img) { transform: scale(1.03); }
   .tag { position: absolute; left: 10px; top: 10px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 5px; background: rgba(255,255,255,.94); color: var(--ink); }
   .tag-po { background: var(--primary); color: #fff; }
