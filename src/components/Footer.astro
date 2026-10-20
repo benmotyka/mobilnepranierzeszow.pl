@@ -37,7 +37,11 @@ const year = new Date().getFullYear();
   </div>
   <div class="wrap bottom">
     <span>© {year} {SITE.domain}</span>
-    {SITE.company && <span>{SITE.company.name} · NIP {SITE.company.nip}</span>}
+    {SITE.company && (
+      <span class="legal">
+        {SITE.name} to marka firmy {SITE.company.name}, <span class="nw">{SITE.company.address}</span>, NIP {SITE.company.nip}, REGON {SITE.company.regon}.
+      </span>
+    )}
   </div>
 </footer>
 <style>
@@ -54,6 +58,8 @@ const year = new Date().getFullYear();
   .h { font-weight: 700; color: var(--aqua-lt); text-transform: uppercase; font-size: 13px; letter-spacing: .1em; }
   ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
   .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-top: 1px solid #23465c; margin-top: 36px; padding-block: 18px; color: #9fb8c6; font-size: 14px; }
+  .legal { max-width: 70ch; }
+  .nw { white-space: nowrap; }
   @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
 </style>

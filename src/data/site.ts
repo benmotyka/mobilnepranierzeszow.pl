@@ -18,8 +18,13 @@ export const SITE = {
   travelFee: 30,
   geo: { lat: 50.0412, lng: 21.9991 }, // centrum Rzeszowa, firma dojeżdża do klienta
   payments: 'gotówka, BLIK lub przelew',
-  // Dane firmy do stopki. Zostaw null, dopóki nie zdecydujecie, co pokazać.
-  company: null as null | { name: string; nip: string },
+  // Dane firmy do stopki.
+  company: {
+    name: 'Szpalka Autodetailing Mikołaj Szpala',
+    address: 'Borek Stary 64, 36-020 Tyczyn',
+    nip: '8133950704',
+    regon: '544460128',
+  } as null | { name: string; address: string; nip: string; regon: string },
   googleReviewsUrl: null as null | string,
   facebookUrl: null as null | string,
   instagramUrl: null as null | string,
