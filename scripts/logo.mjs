@@ -68,7 +68,7 @@ await shot(`
     <h1 class="d" style="margin-top:58px;font-size:70px;line-height:1.05;letter-spacing:-.025em;color:${navy}">Pranie kanap i narożników<br><span style="color:${blue}">u Ciebie w domu</span></h1>
     <p style="margin-top:22px;font-size:31px;color:#4b6575">Rzeszów i okolice · dojazd w cenie · wycena ze zdjęcia</p>
     <div style="position:absolute;left:0;right:0;bottom:0;height:72px;background:${blue};display:flex;align-items:center;justify-content:space-between;padding:0 80px;color:#fff;font-size:30px;font-weight:700">
-      <span>WhatsApp / tel. 730 168 626</span><span style="font-weight:500;color:#cfe0f5">mobilnepranierzeszow.pl</span></div>
+      <span>WhatsApp / tel. 518 517 712</span><span style="font-weight:500;color:#cfe0f5">mobilnepranierzeszow.pl</span></div>
   </div>`, 1200, 630, path.join(PUB, 'og.png'));
 console.log('OK: public/favicon.svg, apple-touch-icon.png, logo.png, og.png');
 
@@ -102,7 +102,7 @@ await shot(`
     <div style="position:absolute;left:270px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:34px">
       ${lockup({ s: 150, ink: '#fff', id: 'c' })}
       <p class="d" style="font-size:44px;font-weight:700;line-height:1.15;letter-spacing:-.015em">Pranie kanap, narożników, materacy i dywanów<br><span style="color:${teal}">u Ciebie w domu</span></p>
-      <div style="display:flex;gap:22px;align-items:center;font-size:28px">${pill('WhatsApp 730 168 626', 30)}<span style="opacity:.85">Rzeszów i okolice · dojazd w cenie</span></div>
+      <div style="display:flex;gap:22px;align-items:center;font-size:28px">${pill('WhatsApp 518 517 712', 30)}<span style="opacity:.85">Rzeszów i okolice · dojazd w cenie</span></div>
     </div>
   </div>`, 1640, 624, G('okladka-facebook.png'));
 
@@ -113,7 +113,7 @@ await shot(`
     <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:56px">
       ${lockup({ s: 220, ink: '#fff', id: 'g' })}
       <p class="d" style="font-size:66px;font-weight:700;line-height:1.12;letter-spacing:-.015em">Pranie tapicerki u Ciebie w domu<br><span style="color:${teal}">Rzeszów i okolice</span></p>
-      ${pill('WhatsApp 730 168 626', 44)}
+      ${pill('WhatsApp 518 517 712', 44)}
     </div>
   </div>`, 1920, 1080, G('okladka-16x9.png'));
 
@@ -122,7 +122,7 @@ await shot(`
   <div style="width:1080px;height:1920px;position:relative;overflow:hidden;color:#fff">
     ${coverBg(1080, 1920)}
     <div style="position:absolute;top:150px;left:0;right:0;display:flex;justify-content:center">${lockup({ s: 150, ink: '#fff', id: 's' })}</div>
-    <div style="position:absolute;bottom:170px;left:0;right:0;text-align:center">${pill('WhatsApp 730 168 626', 40)}</div>
+    <div style="position:absolute;bottom:170px;left:0;right:0;text-align:center">${pill('WhatsApp 518 517 712', 40)}</div>
   </div>`, 1080, 1920, G('tlo-relacja.png'));
 
 // Oryginał propozycji 2 wycięty z planszy, jeśli plansza leży w folderze projektu.

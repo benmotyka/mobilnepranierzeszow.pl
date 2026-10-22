@@ -5,9 +5,9 @@ export const SITE = {
   name: 'Mobilne Pranie Rzeszów',
   domain: 'mobilnepranierzeszow.pl',
   url: 'https://mobilnepranierzeszow.pl',
-  phone: '+48 730 168 626',
-  phoneHref: 'tel:+48730168626',
-  whatsapp: '48730168626',
+  phone: '+48 518 517 712',
+  phoneHref: 'tel:+48518517712',
+  whatsapp: '48518517712',
   // Godziny pokazywane na stronie i w danych dla Google.
   hours: { days: 'Pn–Sb', open: '08:00', close: '20:00' },
   hoursSchema: [
